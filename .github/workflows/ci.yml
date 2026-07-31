@@ -40,3 +40,49 @@ jobs:
       - run: composer lint
       - run: composer stan
       - run: composer test
+
+  # Official WordPress.org Plugin Check — same strict gate as AGT Sync / Crypto.
+  # Built into the release layout first (composer --no-dev + distignore).
+  plugin-check:
+    name: WordPress.org Plugin Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: composer:v2
+
+      - name: Install runtime dependencies
+        env:
+          GH_TOKEN: ${{ secrets.SDK_RELEASE_TOKEN }}
+        run: |
+          if [ -n "$GH_TOKEN" ]; then
+            composer config --global github-oauth.github.com "$GH_TOKEN"
+          fi
+          composer install --no-dev --prefer-dist --no-progress --no-interaction
+
+      - name: Build the release layout
+        run: |
+          set -euo pipefail
+          slug=dabdash-sync-for-wordpress
+          dest="${{ runner.temp }}/${slug}"
+          mkdir -p "$dest"
+          rsync -a --exclude-from=.distignore ./ "$dest/"
+          test -f "$dest/vendor/autoload.php"
+          echo "PLUGIN_DIR=$dest" >> "$GITHUB_ENV"
+
+      - name: Run Plugin Check
+        uses: wordpress/plugin-check-action@v1
+        with:
+          build-dir: ${{ env.PLUGIN_DIR }}
+          slug: dabdash-sync-for-wordpress
+          severity: 0
+          include-experimental: true
+          include-low-severity-errors: true
+          include-low-severity-warnings: true
+          # Fail the job on any finding so CI matches review expectations.
+          strict: true
