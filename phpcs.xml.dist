@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<ruleset name="DabDash Sync for WordPress">
+	<description>WordPress-Extra + Docs, PHP 8.1+.</description>
+	<file>.</file>
+	<exclude-pattern>*/vendor/*</exclude-pattern>
+	<exclude-pattern>*/tests/*</exclude-pattern>
+	<arg value="ps"/>
+	<arg name="colors"/>
+	<arg name="parallel" value="8"/>
+	<arg name="extensions" value="php"/>
+	<rule ref="WordPress-Extra"/>
+	<rule ref="WordPress-Docs"/>
+	<config name="text_domain" value="dabdash-sync-for-wordpress"/>
+	<rule ref="WordPress.WP.I18n">
+		<properties>
+			<property name="text_domain" type="array">
+				<element value="dabdash-sync-for-wordpress"/>
+			</property>
+		</properties>
+	</rule>
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+		<properties>
+			<property name="prefixes" type="array">
+				<element value="DabDashSync"/>
+				<element value="DABDASH_SYNC"/>
+				<element value="dabdash_sync"/>
+			</property>
+		</properties>
+	</rule>
+	<config name="minimum_wp_version" value="6.4"/>
+	<config name="testVersion" value="8.1-"/>
+	<rule ref="PHPCompatibilityWP"/>
+	<rule ref="WordPress.Files.FileName">
+		<properties>
+			<property name="strict_class_file_names" value="false"/>
+		</properties>
+		<exclude-pattern>*/includes/*</exclude-pattern>
+	</rule>
+
+	<!--
+		Sync\FieldMap and Sync\Resolver are pure domain objects with camelCase
+		method names (resolveCanonical, mergeConsent, …) pinned by unit tests.
+		Renaming them to snake_case would churn the public sync API for no gain.
+	-->
+	<rule ref="WordPress.NamingConventions.ValidFunctionName.MethodNameInvalid">
+		<exclude-pattern>*/includes/Sync/*</exclude-pattern>
+	</rule>
+
+	<!-- Local readme.txt header parse — not a remote filesystem operation. -->
+	<rule ref="WordPress.WP.AlternativeFunctions.file_system_operations_fopen">
+		<exclude-pattern>*/includes/Update/GitHubUpdater.php</exclude-pattern>
+	</rule>
+	<rule ref="WordPress.WP.AlternativeFunctions.file_system_operations_fclose">
+		<exclude-pattern>*/includes/Update/GitHubUpdater.php</exclude-pattern>
+	</rule>
+</ruleset>

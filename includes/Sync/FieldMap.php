@@ -54,16 +54,16 @@ final class FieldMap {
 	 * @var array<string, string>
 	 */
 	private const CANONICAL_FIELDS = array(
-		'id_verified_at'              => '_dabdash_id_verified_at',
-		'medical_record_verified_at'  => '_dabdash_medical_verified_at',
-		'email_verified_at'           => '_dabdash_email_verified_at',
-		'phone_verified_at'           => '_dabdash_phone_verified_at',
-		'phone_validation_status'     => '_dabdash_phone_validation_status',
-		'loyalty_points'              => '_dabdash_loyalty_points',
-		'no_loyalty'                  => '_dabdash_no_loyalty',
-		'no_coupons'                  => '_dabdash_no_coupons',
-		'deletion_requested_at'       => '_dabdash_deletion_requested_at',
-		'last_login_at'               => '_dabdash_last_login_at',
+		'id_verified_at'             => '_dabdash_id_verified_at',
+		'medical_record_verified_at' => '_dabdash_medical_verified_at',
+		'email_verified_at'          => '_dabdash_email_verified_at',
+		'phone_verified_at'          => '_dabdash_phone_verified_at',
+		'phone_validation_status'    => '_dabdash_phone_validation_status',
+		'loyalty_points'             => '_dabdash_loyalty_points',
+		'no_loyalty'                 => '_dabdash_no_loyalty',
+		'no_coupons'                 => '_dabdash_no_coupons',
+		'deletion_requested_at'      => '_dabdash_deletion_requested_at',
+		'last_login_at'              => '_dabdash_last_login_at',
 	);
 
 	/**

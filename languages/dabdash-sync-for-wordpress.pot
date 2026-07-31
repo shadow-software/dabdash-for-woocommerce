@@ -1,0 +1,114 @@
+# Copyright (C) 2026 Shadow Software LLC
+# This file is distributed under the GPL-2.0-or-later.
+msgid ""
+msgstr ""
+"Project-Id-Version: DabDash Sync for WordPress 0.1.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/dabdash-sync-for-wordpress\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-07-30T18:30:57+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: dabdash-sync-for-wordpress\n"
+
+#. Plugin Name of the plugin
+#: dabdash-sync-for-wordpress.php
+msgid "DabDash Sync for WordPress"
+msgstr ""
+
+#. Plugin URI of the plugin
+#: dabdash-sync-for-wordpress.php
+msgid "https://github.com/shadow-software/dabdash-sync-for-wordpress"
+msgstr ""
+
+#. Description of the plugin
+#: dabdash-sync-for-wordpress.php
+msgid "Keeps WordPress customers in step with DabDash — verification status, loyalty balance, and marketing consent — with DabDash as the source of truth. Free and open source; requires a DabDash tenant."
+msgstr ""
+
+#. Author of the plugin
+#: dabdash-sync-for-wordpress.php
+msgid "Shadow Software LLC"
+msgstr ""
+
+#. Author URI of the plugin
+#: dabdash-sync-for-wordpress.php
+msgid "https://shadowsoftware.com/"
+msgstr ""
+
+#: dabdash-sync-for-wordpress.php:90
+msgid "DabDash Sync is missing its Composer dependencies. Run composer install in the plugin directory, or reinstall from a release ZIP."
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:36
+#: includes/Admin/SettingsPage.php:37
+#: includes/Admin/SettingsPage.php:97
+msgid "DabDash Sync"
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:78
+msgid "Settings saved."
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:98
+msgid "DabDash is the source of truth for verification, loyalty, and consent. WordPress mirrors what it is allowed to see."
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:104
+msgid "Tenant API base URL"
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:110
+msgid "API access token"
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:113
+msgid "Leave blank to keep the current token."
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:117
+msgid "Sync"
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:121
+msgid "Enable background sync"
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:126
+msgid "Save settings"
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:129
+msgid "Connection"
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:133
+msgid "API base and token are set. Pull/push jobs will use shadow-software/dabdash-php-sdk."
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:134
+msgid "Not configured yet."
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:138
+msgid "Field map"
+msgstr ""
+
+#: includes/Admin/SettingsPage.php:139
+msgid "Classification used by the sync resolver (canonical / contact / consent / never)."
+msgstr ""
+
+#: includes/Plugin.php:70
+msgid "Settings"
+msgstr ""
+
+#: includes/Update/GitHubUpdater.php:209
+msgid "Keeps WordPress customers in step with DabDash — verification status, loyalty balance and marketing consent — with DabDash as the source of truth."
+msgstr ""
+
+#: includes/Update/GitHubUpdater.php:253
+msgid "Could not prepare the downloaded update for installation."
+msgstr ""

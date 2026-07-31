@@ -14,13 +14,13 @@ namespace DabDashSync\Tests;
 
 use DabDashSync\Sync\FieldMap;
 use DabDashSync\Sync\Resolver;
-use PHPUnit\Framework\TestCase;
+use DabDashSync\Tests\TestCase as BaseTestCase;
 
 /**
  * @covers \DabDashSync\Sync\Resolver
  * @covers \DabDashSync\Sync\FieldMap
  */
-final class ResolverTest extends TestCase {
+final class ResolverTest extends BaseTestCase {
 
 	// ---------------------------------------------------------------------
 	// Consent — the ratchet.

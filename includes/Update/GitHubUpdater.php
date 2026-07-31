@@ -89,6 +89,8 @@ final class GitHubUpdater {
 	private $cache_key;
 
 	/**
+	 * Wire the updater for one plugin.
+	 *
 	 * @param string $repo    GitHub "owner/name".
 	 * @param string $file    Absolute path to the main plugin file.
 	 * @param string $version Installed version.
@@ -223,10 +225,10 @@ final class GitHubUpdater {
 	 * copy instead of upgrading it — leaving two plugins, one active and stale.
 	 * Renaming the source before install is what makes the upgrade an upgrade.
 	 *
-	 * @param string $source        Path to the unpacked source.
-	 * @param string $remote_source Path to the downloaded archive's root.
-	 * @param object $upgrader      The upgrader instance.
-	 * @param array  $args          Extra arguments, including the target plugin.
+	 * @param string               $source        Path to the unpacked source.
+	 * @param string               $remote_source Path to the downloaded archive's root.
+	 * @param object               $upgrader      The upgrader instance.
+	 * @param array<string, mixed> $args          Extra arguments, including the target plugin.
 	 * @return string|\WP_Error
 	 */
 	public function normalise_directory( $source, $remote_source, $upgrader, $args = array() ) {
@@ -260,8 +262,8 @@ final class GitHubUpdater {
 	/**
 	 * Drop the cached release after any plugin update runs.
 	 *
-	 * @param object $upgrader The upgrader instance.
-	 * @param array  $data     Information about the process that ran.
+	 * @param object               $upgrader The upgrader instance.
+	 * @param array<string, mixed> $data     Information about the process that ran.
 	 * @return void
 	 */
 	public function flush( $upgrader, $data ) {
@@ -344,7 +346,7 @@ final class GitHubUpdater {
 	/**
 	 * Pick the installable ZIP from a release's assets.
 	 *
-	 * @param array $assets Release assets from the API.
+	 * @param array<int, array<string, mixed>> $assets Release assets from the API.
 	 * @return string|null Download URL, or null if there is no suitable asset.
 	 */
 	private function find_asset( $assets ) {

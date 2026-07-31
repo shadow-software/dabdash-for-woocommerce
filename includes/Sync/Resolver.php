@@ -152,7 +152,8 @@ final class Resolver {
 	public static function equivalent( $a, $b ) {
 		if ( null === $a || null === $b ) {
 			return ( null === $a && null === $b )
-				|| ( '' === $a || '' === $b ) && ( '' === (string) $a && '' === (string) $b );
+				|| ( null === $a && '' === $b )
+				|| ( null === $b && '' === $a );
 		}
 
 		if ( is_bool( $a ) || is_bool( $b ) ) {
@@ -160,27 +161,27 @@ final class Resolver {
 		}
 
 		if ( is_numeric( $a ) && is_numeric( $b ) ) {
-			return 0 === bccomp_fallback( (string) $a, (string) $b );
+			return 0 === self::bccomp_fallback( (string) $a, (string) $b );
 		}
 
 		return (string) $a === (string) $b;
 	}
-}
 
-/**
- * Compare two numeric strings without requiring bcmath.
- *
- * @param string $a First numeric string.
- * @param string $b Second numeric string.
- * @return int
- */
-function bccomp_fallback( $a, $b ) {
-	$fa = (float) $a;
-	$fb = (float) $b;
+	/**
+	 * Compare two numeric strings without requiring bcmath.
+	 *
+	 * @param string $a First numeric string.
+	 * @param string $b Second numeric string.
+	 * @return int
+	 */
+	private static function bccomp_fallback( $a, $b ) {
+		$fa = (float) $a;
+		$fb = (float) $b;
 
-	if ( abs( $fa - $fb ) < 0.000001 ) {
-		return 0;
+		if ( abs( $fa - $fb ) < 0.000001 ) {
+			return 0;
+		}
+
+		return ( $fa < $fb ) ? -1 : 1;
 	}
-
-	return ( $fa < $fb ) ? -1 : 1;
 }
