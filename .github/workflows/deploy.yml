@@ -1,7 +1,7 @@
 name: Deploy to WordPress.org
 
 # Publishes a tagged release to the WordPress.org plugin directory
-# (SVN: https://plugins.svn.wordpress.org/dabdash-sync-for-wordpress):
+# (SVN: https://plugins.svn.wordpress.org/dabdash-for-woocommerce):
 #   * the installable plugin -> SVN trunk + a matching SVN tag (respecting
 #     .distignore / .gitattributes export-ignore), and
 #   * the directory assets (icon, banner, screenshot-N.png) from .wordpress-org/
@@ -74,7 +74,7 @@ jobs:
         env:
           SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
           SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
-          SLUG: dabdash-sync-for-wordpress
+          SLUG: dabdash-for-woocommerce
           ASSETS_DIR: .wordpress-org
 
       # Keep a copy of the exact ZIP that was published to wp.org for auditing.
@@ -82,5 +82,5 @@ jobs:
         if: steps.guard.outputs.ready == 'true'
         uses: actions/upload-artifact@v4
         with:
-          name: dabdash-sync-for-wordpress-${{ github.ref_name }}
+          name: dabdash-for-woocommerce-${{ github.ref_name }}
           path: ${{ steps.deploy.outputs.zip-path }}

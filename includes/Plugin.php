@@ -8,13 +8,13 @@
 namespace DabDashSync;
 
 use DabDashSync\Admin\SettingsPage;
+use DabDashSync\Sync\Hooks;
 use DabDashSync\Sync\Queue;
-use DabDashSync\Update\GitHubUpdater;
 
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Wires settings, sync hooks, and GitHub self-updates.
+ * Wires settings, sync hooks, and storefront/user meta listeners.
  */
 final class Plugin {
 
@@ -54,15 +54,10 @@ final class Plugin {
 		}
 
 		( new Queue() )->register();
-
-		( new GitHubUpdater(
-			'shadow-software/dabdash-sync-for-wordpress',
-			DABDASH_SYNC_FILE,
-			DABDASH_SYNC_VERSION
-		) )->register();
+		( new Hooks() )->register();
 
 		add_filter(
-			'plugin_action_links_' . plugin_basename( DABDASH_SYNC_FILE ),
+			'plugin_action_links_' . plugin_basename( DABDASH_WOO_FILE ),
 			array( $this, 'plugin_action_links' )
 		);
 	}
@@ -74,11 +69,11 @@ final class Plugin {
 	 * @return array<string, string>
 	 */
 	public function plugin_action_links( $links ) {
-		$url = admin_url( 'options-general.php?page=dabdash-sync' );
+		$url = admin_url( 'options-general.php?page=dabdash-woo' );
 
 		return array_merge(
 			array(
-				'settings' => '<a href="' . esc_url( $url ) . '">' . esc_html__( 'Settings', 'dabdash-sync-for-wordpress' ) . '</a>',
+				'settings' => '<a href="' . esc_url( $url ) . '">' . esc_html__( 'Settings', 'dabdash-for-woocommerce' ) . '</a>',
 			),
 			$links
 		);

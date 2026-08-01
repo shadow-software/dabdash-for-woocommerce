@@ -68,7 +68,7 @@ jobs:
       - name: Build the release layout
         run: |
           set -euo pipefail
-          slug=dabdash-sync-for-wordpress
+          slug=dabdash-for-woocommerce
           dest="${{ runner.temp }}/${slug}"
           mkdir -p "$dest"
           rsync -a --exclude-from=.distignore ./ "$dest/"
@@ -79,7 +79,7 @@ jobs:
         uses: wordpress/plugin-check-action@v1
         with:
           build-dir: ${{ env.PLUGIN_DIR }}
-          slug: dabdash-sync-for-wordpress
+          slug: dabdash-for-woocommerce
           severity: 0
           include-experimental: true
           include-low-severity-errors: true

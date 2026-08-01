@@ -4,3 +4,5 @@
  *
  * @package DabDashSync
  */
+
+defined( 'ABSPATH' ) || exit;

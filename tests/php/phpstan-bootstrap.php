@@ -5,10 +5,10 @@
  * @package DabDashSync
  */
 
-define( 'DABDASH_SYNC_VERSION', '1.0.0' );
-define( 'DABDASH_SYNC_FILE', '' );
-define( 'DABDASH_SYNC_PATH', '' );
-define( 'DABDASH_SYNC_URL', '' );
+define( 'DABDASH_WOO_VERSION', '1.0.0' );
+define( 'DABDASH_WOO_FILE', '' );
+define( 'DABDASH_WOO_PATH', '' );
+define( 'DABDASH_WOO_URL', '' );
 
 if ( ! function_exists( 'as_has_scheduled_action' ) ) {
 	/**

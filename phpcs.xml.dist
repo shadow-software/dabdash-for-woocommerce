@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<ruleset name="DabDash Sync for WordPress">
+<ruleset name="DabDash Sync for WooCommerce">
 	<description>WordPress-Extra + Docs, PHP 8.1+.</description>
 	<file>.</file>
 	<exclude-pattern>*/vendor/*</exclude-pattern>
@@ -10,11 +10,11 @@
 	<arg name="extensions" value="php"/>
 	<rule ref="WordPress-Extra"/>
 	<rule ref="WordPress-Docs"/>
-	<config name="text_domain" value="dabdash-sync-for-wordpress"/>
+	<config name="text_domain" value="dabdash-for-woocommerce"/>
 	<rule ref="WordPress.WP.I18n">
 		<properties>
 			<property name="text_domain" type="array">
-				<element value="dabdash-sync-for-wordpress"/>
+				<element value="dabdash-for-woocommerce"/>
 			</property>
 		</properties>
 	</rule>
@@ -22,8 +22,9 @@
 		<properties>
 			<property name="prefixes" type="array">
 				<element value="DabDashSync"/>
-				<element value="DABDASH_SYNC"/>
-				<element value="dabdash_sync"/>
+				<element value="DABDASH_WOO"/>
+				<element value="dabdash_woo"/>
+				<element value="dabdash_woo_"/>
 			</property>
 		</properties>
 	</rule>
@@ -44,13 +45,5 @@
 	-->
 	<rule ref="WordPress.NamingConventions.ValidFunctionName.MethodNameInvalid">
 		<exclude-pattern>*/includes/Sync/*</exclude-pattern>
-	</rule>
-
-	<!-- Local readme.txt header parse — not a remote filesystem operation. -->
-	<rule ref="WordPress.WP.AlternativeFunctions.file_system_operations_fopen">
-		<exclude-pattern>*/includes/Update/GitHubUpdater.php</exclude-pattern>
-	</rule>
-	<rule ref="WordPress.WP.AlternativeFunctions.file_system_operations_fclose">
-		<exclude-pattern>*/includes/Update/GitHubUpdater.php</exclude-pattern>
 	</rule>
 </ruleset>

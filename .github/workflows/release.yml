@@ -9,7 +9,7 @@ name: Release
 # Trigger: push a version tag, e.g.
 #   git tag 1.0.0 && git push origin 1.0.0
 # The tag MUST equal readme.txt's "Stable tag", the plugin header "Version:", and
-# the DABDASH_SYNC_VERSION constant — the build fails loudly if they disagree, so a
+# the DABDASH_WOO_VERSION constant — the build fails loudly if they disagree, so a
 # mismatched release can never ship.
 on:
   push:
@@ -54,15 +54,15 @@ jobs:
           set -euo pipefail
           tag="${{ steps.version.outputs.version }}"
 
-          header="$(grep -oE '^\s*\*\s*Version:\s*\S+' dabdash-sync-for-wordpress.php | awk '{print $NF}')"
-          const="$(grep -oE "DABDASH_SYNC_VERSION',\s*'[^']+'" dabdash-sync-for-wordpress.php | grep -oE "'[0-9][^']*'" | tr -d "'")"
+          header="$(grep -oE '^\s*\*\s*Version:\s*\S+' dabdash-for-woocommerce.php | awk '{print $NF}')"
+          const="$(grep -oE "DABDASH_WOO_VERSION',\s*'[^']+'" dabdash-for-woocommerce.php | grep -oE "'[0-9][^']*'" | tr -d "'")"
           stable="$(grep -oE '^Stable tag:\s*\S+' readme.txt | awk '{print $NF}')"
 
           echo "tag=${tag}  header=${header}  const=${const}  stable_tag=${stable}"
 
           fail=0
           [ "$header" = "$tag" ] || { echo "::error::Plugin header Version ($header) != tag ($tag)"; fail=1; }
-          [ "$const"  = "$tag" ] || { echo "::error::DABDASH_SYNC_VERSION ($const) != tag ($tag)"; fail=1; }
+          [ "$const"  = "$tag" ] || { echo "::error::DABDASH_WOO_VERSION ($const) != tag ($tag)"; fail=1; }
           [ "$stable" = "$tag" ] || { echo "::error::readme.txt Stable tag ($stable) != tag ($tag)"; fail=1; }
 
           if [ "$fail" -ne 0 ]; then
@@ -89,7 +89,7 @@ jobs:
         id: build
         run: |
           set -euo pipefail
-          slug="dabdash-sync-for-wordpress"
+          slug="dabdash-for-woocommerce"
           version="${{ steps.version.outputs.version }}"
           zip="${slug}.${version}.zip"
           staging="${RUNNER_TEMP}/${slug}"
@@ -97,7 +97,7 @@ jobs:
           mkdir -p "$staging" dist
           rsync -a --exclude-from=.distignore ./ "$staging/"
           test -f "$staging/vendor/autoload.php"
-          test -f "$staging/dabdash-sync-for-wordpress.php"
+          test -f "$staging/dabdash-for-woocommerce.php"
 
           (
             cd "${RUNNER_TEMP}"
@@ -115,16 +115,18 @@ jobs:
           echo "── ZIP contents (head) ──"
           unzip -l "$zip" | head -60
 
-          unzip -l "$zip" | grep -q 'dabdash-sync-for-wordpress/dabdash-sync-for-wordpress.php' \
+          unzip -l "$zip" | grep -q 'dabdash-for-woocommerce/dabdash-for-woocommerce.php' \
             || { echo "::error::Main plugin file missing from the ZIP"; exit 1; }
-          unzip -l "$zip" | grep -q 'dabdash-sync-for-wordpress/vendor/autoload.php' \
+          unzip -l "$zip" | grep -q 'dabdash-for-woocommerce/vendor/autoload.php' \
             || { echo "::error::vendor/autoload.php missing — SDK not packaged"; exit 1; }
 
-          if unzip -l "$zip" | grep -Eq 'dabdash-sync-for-wordpress/(tests/|docs/|\.github|composer\.(json|lock)|phpcs|phpstan|phpunit|\.distignore|\.gitattributes|\.wordpress-org|README\.md|CONTRIBUTING\.md|SECURITY\.md)'; then
+          if unzip -l "$zip" | grep -Eq 'dabdash-for-woocommerce/(tests/|docs/|\.github|composer\.lock|phpcs|phpstan|phpunit|\.distignore|\.gitattributes|\.wordpress-org|README\.md|CONTRIBUTING\.md|SECURITY\.md)'; then
             echo "::error::Development or repo files leaked into the installable ZIP"
             exit 1
           fi
 
+          unzip -l "$zip" | grep -q 'dabdash-for-woocommerce/composer.json' \
+            || { echo "::error::composer.json missing — required alongside vendor/"; exit 1; }
           echo "ZIP is lean and installable."
 
       - name: Extract release notes from the changelog
@@ -139,17 +141,17 @@ jobs:
           fi
 
           {
-            echo "## DabDash Sync for WordPress ${version}"
+            echo "## DabDash Sync for WooCommerce ${version}"
             echo
             echo "$body"
             echo
             echo "---"
             echo
-            echo "**Install:** download \`dabdash-sync-for-wordpress.${version}.zip\` below, then in your WordPress admin go to **Plugins → Add New → Upload Plugin**, choose the ZIP, and click **Install Now**. Requires a DabDash tenant API base URL and access token."
+            echo "**Install:** download \`dabdash-for-woocommerce.${version}.zip\` below, then in your WordPress admin go to **Plugins → Add New → Upload Plugin**, choose the ZIP, and click **Install Now**. Requires a DabDash tenant API base URL and access token."
             echo
-            echo "**Also on WordPress.org:** https://wordpress.org/plugins/dabdash-sync-for-wordpress/"
+            echo "**Also on WordPress.org:** https://wordpress.org/plugins/dabdash-for-woocommerce/"
             echo
-            echo "**Documentation & source:** https://github.com/shadow-software/dabdash-sync-for-wordpress#readme"
+            echo "**Documentation & source:** https://github.com/shadow-software/dabdash-for-woocommerce#readme"
             echo
             echo "Developed & maintained by [Shadow Software LLC](https://shadowsoftware.com/)."
           } > release-notes.md

@@ -1,32 +1,30 @@
-# WordPress.org submission — DabDash Sync for WordPress
+# WordPress.org submission — DabDash Sync for WooCommerce
 
-Slug (intended): `dabdash-sync-for-wordpress`
+Slug: **`dabdash-for-woocommerce`**
 
 ## Ready
 
 - [x] Plugin header + `readme.txt` Stable tag `1.0.0`
+- [x] Requires WooCommerce (`Requires Plugins: woocommerce`)
 - [x] GPL-2.0-or-later LICENSE
-- [x] External services section (DabDash tenant API)
-- [x] Privacy model documented (never-fields, consent ratchet)
+- [x] External services section (DabDash tenant API + field list)
+- [x] Privacy model (never-fields, consent ratchet, uninstall meta cleanup)
 - [x] `.wordpress-org/` icons + banners + screenshot-1
 - [x] Runtime SDK via Packagist (`shadow-software/dabdash-php-sdk` ^0.2)
-- [x] `vendor/` shipped in release ZIPs (`composer install --no-dev`)
-- [x] GitHub Release + WordPress.org deploy workflows
-- [x] GitHub README matches Shadow Software plugin family (OG banner, About, Also by)
+- [x] `vendor/` + `composer.json` shipped in release ZIPs
+- [x] No custom plugin updater
+- [x] Strict Plugin Check CI job
+- [x] Slug/name free of the restricted term “wordpress”
 
 ## Still needed before / during review
 
-1. **SVN secrets** on the GitHub repo: `SVN_USERNAME` / `SVN_PASSWORD`
-2. **Live screenshots** of Settings → DabDash Sync (replace banner placeholder if needed)
-3. **Reviewer sandbox** — a throwaway DabDash tenant + token for Plugin Review
-4. Confirm DabDash public URLs: terms, privacy, and tenant API docs
-5. Submit via [WordPress.org Plugin Developer](https://wordpress.org/plugins/developers/add/) once the ZIP is tagged
+1. **SVN secrets** — `SVN_USERNAME` / `SVN_PASSWORD` on the GitHub repo
+2. **Live Settings screenshot** (replace banner placeholder if still present)
+3. **Reviewer sandbox** — throwaway DabDash tenant + token
+4. Confirm DabDash public URLs: terms, privacy
 
 ## Installable ZIP
 
 ```bash
 git tag 1.0.0 && git push origin 1.0.0
 ```
-
-`release.yml` builds `dabdash-sync-for-wordpress.1.0.0.zip` with `vendor/`.
-`deploy.yml` pushes to SVN when credentials exist.

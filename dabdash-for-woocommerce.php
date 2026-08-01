@@ -1,34 +1,38 @@
 <?php
 /**
- * Plugin Name:       DabDash Sync for WordPress
- * Plugin URI:        https://github.com/shadow-software/dabdash-sync-for-wordpress
- * Description:       Keeps WordPress customers in step with DabDash — verification status, loyalty balance, and marketing consent — with DabDash as the source of truth. Free and open source; requires a DabDash tenant.
+ * Plugin Name:       DabDash Sync for WooCommerce
+ * Plugin URI:        https://github.com/shadow-software/dabdash-for-woocommerce
+ * Description:       Keeps WooCommerce customers in step with DabDash — verification status, loyalty balance, and marketing consent — with DabDash as the source of truth. Free and open source; requires a DabDash tenant.
  * Version:           1.0.0
  * Requires at least: 6.4
  * Requires PHP:      8.1
+ * Requires Plugins:  woocommerce
  * Author:            Shadow Software LLC
  * Author URI:        https://shadowsoftware.com/
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       dabdash-sync-for-wordpress
+ * Text Domain:       dabdash-for-woocommerce
  * Domain Path:       /languages
+ *
+ * WC requires at least: 8.2
+ * WC tested up to:      10.8
  *
  * @package DabDashSync
  */
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'DABDASH_SYNC_VERSION', '1.0.0' );
-define( 'DABDASH_SYNC_FILE', __FILE__ );
-define( 'DABDASH_SYNC_PATH', plugin_dir_path( __FILE__ ) );
-define( 'DABDASH_SYNC_URL', plugin_dir_url( __FILE__ ) );
+define( 'DABDASH_WOO_VERSION', '1.0.0' );
+define( 'DABDASH_WOO_FILE', __FILE__ );
+define( 'DABDASH_WOO_PATH', plugin_dir_path( __FILE__ ) );
+define( 'DABDASH_WOO_URL', plugin_dir_url( __FILE__ ) );
 
 /*
  * Runtime Composer dependencies (shadow-software/dabdash-php-sdk) ship in vendor/.
  */
-$dabdash_sync_autoload = DABDASH_SYNC_PATH . 'vendor/autoload.php';
-if ( is_readable( $dabdash_sync_autoload ) ) {
-	require_once $dabdash_sync_autoload;
+$dabdash_woo_autoload = DABDASH_WOO_PATH . 'vendor/autoload.php';
+if ( is_readable( $dabdash_woo_autoload ) ) {
+	require_once $dabdash_woo_autoload;
 }
 
 /**
@@ -52,7 +56,7 @@ spl_autoload_register(
 		}
 
 		$relative  = str_replace( '\\', DIRECTORY_SEPARATOR, $relative );
-		$base      = DABDASH_SYNC_PATH . 'includes' . DIRECTORY_SEPARATOR;
+		$base      = DABDASH_WOO_PATH . 'includes' . DIRECTORY_SEPARATOR;
 		$file      = $base . $relative . '.php';
 		$real_base = realpath( $base );
 		$real_file = realpath( $file );
@@ -66,14 +70,14 @@ spl_autoload_register(
 );
 
 register_activation_hook(
-	DABDASH_SYNC_FILE,
+	DABDASH_WOO_FILE,
 	static function () {
 		\DabDashSync\Lifecycle::activate();
 	}
 );
 
 register_deactivation_hook(
-	DABDASH_SYNC_FILE,
+	DABDASH_WOO_FILE,
 	static function () {
 		\DabDashSync\Lifecycle::deactivate();
 	}
@@ -82,14 +86,14 @@ register_deactivation_hook(
 add_action(
 	'plugins_loaded',
 	static function () {
-		if ( ! is_readable( DABDASH_SYNC_PATH . 'vendor/autoload.php' ) ) {
+		if ( ! is_readable( DABDASH_WOO_PATH . 'vendor/autoload.php' ) ) {
 			add_action(
 				'admin_notices',
 				static function () {
 					echo '<div class="notice notice-error"><p>';
 					echo esc_html__(
 						'DabDash Sync is missing its Composer dependencies. Run composer install in the plugin directory, or reinstall from a release ZIP.',
-						'dabdash-sync-for-wordpress'
+						'dabdash-for-woocommerce'
 					);
 					echo '</p></div>';
 				}

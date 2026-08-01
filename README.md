@@ -1,18 +1,18 @@
 <p align="center">
-  <img src=".github/assets/logo.svg" alt="DabDash Sync for WordPress — by Shadow Software" width="880">
+  <img src=".github/assets/logo.svg" alt="DabDash Sync for WooCommerce — by Shadow Software" width="880">
 </p>
 
-<h1 align="center">DabDash Sync for WordPress</h1>
+<h1 align="center">DabDash Sync for WooCommerce</h1>
 
 <p align="center">
-  <strong>Keep WordPress customers in step with DabDash — verification status,
+  <strong>Keep WooCommerce customers in step with DabDash — verification status,
   loyalty balance, and marketing consent — with DabDash as the source of truth.</strong><br>
   Storefront-facing flags stay honest. Sensitive documents never land in
   <code>wp_usermeta</code>.
 </p>
 
 <p align="center">
-  <a href="https://github.com/shadow-software/dabdash-sync-for-wordpress/releases/latest"><img alt="Latest release" src="https://img.shields.io/github/v/release/shadow-software/dabdash-sync-for-wordpress?style=flat-square&color=8fd468"></a>
+  <a href="https://github.com/shadow-software/dabdash-for-woocommerce/releases/latest"><img alt="Latest release" src="https://img.shields.io/github/v/release/shadow-software/dabdash-for-woocommerce?style=flat-square&color=8fd468"></a>
   <img alt="WordPress" src="https://img.shields.io/badge/WordPress-6.4%2B-21759b?style=flat-square">
   <img alt="PHP" src="https://img.shields.io/badge/PHP-8.1%2B-777bb4?style=flat-square">
   <a href="LICENSE"><img alt="Licence" src="https://img.shields.io/badge/licence-GPL--2.0--or--later-8fd468?style=flat-square"></a>
@@ -21,7 +21,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/shadow-software/dabdash-sync-for-wordpress/releases/latest">Download the latest ZIP</a>
+  <a href="https://github.com/shadow-software/dabdash-for-woocommerce/releases/latest">Download the latest ZIP</a>
   &nbsp;·&nbsp;
   <a href="#installation">Installation</a>
   &nbsp;·&nbsp;
@@ -63,7 +63,7 @@ always wins.
 
 - WordPress 6.4+, PHP 8.1+
 - A DabDash tenant with an API base URL and access token
-- (Optional) WooCommerce — works with plain WordPress users too
+- (Optional) WooCommerce — works with WooCommerce customer accounts
 
 ## How it works
 
@@ -94,7 +94,6 @@ Sync/Puller      → customerList apply
 Sync/Pusher      → customerUpdate proposals
 Sync/Queue       → Action Scheduler or WP-Cron
 Admin/Settings   → connect + diagnostics
-Update/GitHubUpdater → GitHub Releases channel
 ```
 
 ## Installation
@@ -102,7 +101,7 @@ Update/GitHubUpdater → GitHub Releases channel
 **From a ZIP (recommended until WordPress.org listing is live)**
 
 1. Download the ZIP from
-   [GitHub Releases](https://github.com/shadow-software/dabdash-sync-for-wordpress/releases/latest).
+   [GitHub Releases](https://github.com/shadow-software/dabdash-for-woocommerce/releases/latest).
 2. In WordPress: **Plugins → Add New → Upload Plugin**, choose the ZIP, install
    and activate.
 3. Go to **Settings → DabDash Sync**, enter credentials, enable sync.
@@ -189,7 +188,7 @@ owners; this plugin is an independent, unofficial integration.
 | [**Broadside Blocks**](https://github.com/shadow-software/broadside-blocks-for-wordpress) | The editorial furniture that ships with it — short answer, takeaways, contents, FAQ schema, sources. |
 | [**Crypto for WooCommerce**](https://github.com/shadow-software/crypto-for-woocommerce) | Free, self-custodial crypto payments — ETH, USDC, USDT & Bitcoin, confirmed on-chain. [On WordPress.org →](https://wordpress.org/plugins/shadow-software-crypto-for-woocommerce/) |
 | [**AGT Sync for WooCommerce**](https://github.com/shadow-software/agt-for-woocommerce) | Sync your WooCommerce store with your American Gun Trader dealer listings. |
-| [**DabDash Sync for WordPress**](https://github.com/shadow-software/dabdash-sync-for-wordpress) | Verification, loyalty, and consent — DabDash as the source of truth. |
+| [**DabDash Sync for WooCommerce**](https://github.com/shadow-software/dabdash-for-woocommerce) | Verification, loyalty, and consent — DabDash as the source of truth. |
 
 **SDKs**
 

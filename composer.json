@@ -1,5 +1,5 @@
 {
-    "name": "shadow-software/dabdash-sync-for-wordpress",
+    "name": "shadow-software/dabdash-for-woocommerce",
     "description": "Keeps WordPress customers in step with DabDash \u2014 verification, loyalty, and marketing consent \u2014 with DabDash as the source of truth. By Shadow Software.",
     "type": "wordpress-plugin",
     "license": "GPL-2.0-or-later",

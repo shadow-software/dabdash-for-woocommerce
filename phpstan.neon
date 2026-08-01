@@ -4,7 +4,7 @@ includes:
 parameters:
     level: 6
     paths:
-        - dabdash-sync-for-wordpress.php
+        - dabdash-for-woocommerce.php
         - uninstall.php
         - includes
     bootstrapFiles:

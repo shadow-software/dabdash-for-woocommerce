@@ -24,7 +24,7 @@ final class Puller {
 	/**
 	 * Option storing the incremental sync watermark (ISO-8601).
 	 */
-	public const OPTION_UPDATED_SINCE = 'dabdash_sync_updated_since';
+	public const OPTION_UPDATED_SINCE = 'dabdash_woo_updated_since';
 
 	/**
 	 * Rows per API page (API max is 100).
@@ -254,47 +254,53 @@ final class Puller {
 	 * @return void
 	 */
 	private function write_local( \WP_User $user, array $writes ) {
-		$user_updates = array();
+		Hooks::begin_remote_apply();
 
-		foreach ( $writes as $field => $value ) {
-			if ( FieldMap::NEVER === FieldMap::classify( $field ) ) {
-				continue;
-			}
+		try {
+			$user_updates = array();
 
-			$destination = FieldMap::destination( $field );
-
-			if ( null === $destination ) {
-				continue;
-			}
-
-			if ( 'display_name' === $destination ) {
-				$user_updates['display_name'] = null === $value ? '' : (string) $value;
-				continue;
-			}
-
-			if ( 'user_email' === $destination ) {
-				if ( is_string( $value ) && is_email( $value ) ) {
-					$user_updates['user_email'] = $value;
+			foreach ( $writes as $field => $value ) {
+				if ( FieldMap::NEVER === FieldMap::classify( $field ) ) {
+					continue;
 				}
-				continue;
+
+				$destination = FieldMap::destination( $field );
+
+				if ( null === $destination ) {
+					continue;
+				}
+
+				if ( 'display_name' === $destination ) {
+					$user_updates['display_name'] = null === $value ? '' : (string) $value;
+					continue;
+				}
+
+				if ( 'user_email' === $destination ) {
+					if ( is_string( $value ) && is_email( $value ) ) {
+						$user_updates['user_email'] = $value;
+					}
+					continue;
+				}
+
+				if ( is_bool( $value ) ) {
+					update_user_meta( $user->ID, $destination, $value ? '1' : '0' );
+					continue;
+				}
+
+				if ( null === $value || '' === $value ) {
+					delete_user_meta( $user->ID, $destination );
+					continue;
+				}
+
+				update_user_meta( $user->ID, $destination, $value );
 			}
 
-			if ( is_bool( $value ) ) {
-				update_user_meta( $user->ID, $destination, $value ? '1' : '0' );
-				continue;
+			if ( ! empty( $user_updates ) ) {
+				$user_updates['ID'] = $user->ID;
+				wp_update_user( $user_updates );
 			}
-
-			if ( null === $value || '' === $value ) {
-				delete_user_meta( $user->ID, $destination );
-				continue;
-			}
-
-			update_user_meta( $user->ID, $destination, $value );
-		}
-
-		if ( ! empty( $user_updates ) ) {
-			$user_updates['ID'] = $user->ID;
-			wp_update_user( $user_updates );
+		} finally {
+			Hooks::end_remote_apply();
 		}
 	}
 

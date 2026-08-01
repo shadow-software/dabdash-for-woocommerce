@@ -16,14 +16,14 @@ if ( ! defined( 'HOUR_IN_SECONDS' ) ) {
 if ( ! defined( 'MINUTE_IN_SECONDS' ) ) {
 	define( 'MINUTE_IN_SECONDS', 60 );
 }
-if ( ! defined( 'DABDASH_SYNC_VERSION' ) ) {
-	define( 'DABDASH_SYNC_VERSION', '1.0.0' );
+if ( ! defined( 'DABDASH_WOO_VERSION' ) ) {
+	define( 'DABDASH_WOO_VERSION', '1.0.0' );
 }
-if ( ! defined( 'DABDASH_SYNC_FILE' ) ) {
-	define( 'DABDASH_SYNC_FILE', dirname( __DIR__, 2 ) . '/dabdash-sync-for-wordpress.php' );
+if ( ! defined( 'DABDASH_WOO_FILE' ) ) {
+	define( 'DABDASH_WOO_FILE', dirname( __DIR__, 2 ) . '/dabdash-for-woocommerce.php' );
 }
-if ( ! defined( 'DABDASH_SYNC_PATH' ) ) {
-	define( 'DABDASH_SYNC_PATH', dirname( __DIR__, 2 ) . '/' );
+if ( ! defined( 'DABDASH_WOO_PATH' ) ) {
+	define( 'DABDASH_WOO_PATH', dirname( __DIR__, 2 ) . '/' );
 }
 
 spl_autoload_register(
@@ -33,7 +33,7 @@ spl_autoload_register(
 			return;
 		}
 		$relative = str_replace( '\\', '/', substr( $classname, strlen( $prefix ) ) );
-		$file     = DABDASH_SYNC_PATH . 'includes/' . $relative . '.php';
+		$file     = DABDASH_WOO_PATH . 'includes/' . $relative . '.php';
 		if ( is_readable( $file ) ) {
 			require $file;
 		}

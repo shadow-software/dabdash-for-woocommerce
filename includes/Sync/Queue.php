@@ -21,12 +21,12 @@ final class Queue {
 	/**
 	 * Hook name for the pull job.
 	 */
-	public const HOOK_PULL = 'dabdash_sync_pull';
+	public const HOOK_PULL = 'dabdash_woo_pull';
 
 	/**
 	 * Action Scheduler group name.
 	 */
-	private const GROUP = 'dabdash-sync';
+	private const GROUP = 'dabdash-woo';
 
 	/**
 	 * Register handlers and ensure the recurring schedule.

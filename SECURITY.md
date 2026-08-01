@@ -5,7 +5,7 @@
 **Do not** open a public issue for security reports.
 
 - GitHub private vulnerability reporting on
-  [shadow-software/dabdash-sync-for-wordpress](https://github.com/shadow-software/dabdash-sync-for-wordpress/security/advisories/new), or
+  [shadow-software/dabdash-for-woocommerce](https://github.com/shadow-software/dabdash-for-woocommerce/security/advisories/new), or
 - email **security@shadowsoftware.com**
 
 ## Scope

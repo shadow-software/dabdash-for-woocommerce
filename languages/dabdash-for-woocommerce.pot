@@ -2,8 +2,8 @@
 # This file is distributed under the GPL-2.0-or-later.
 msgid ""
 msgstr ""
-"Project-Id-Version: DabDash Sync for WordPress 0.1.0\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/dabdash-sync-for-wordpress\n"
+"Project-Id-Version: DabDash Sync for WooCommerce 0.1.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/dabdash-for-woocommerce\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -12,34 +12,34 @@ msgstr ""
 "POT-Creation-Date: 2026-07-30T18:30:57+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
-"X-Domain: dabdash-sync-for-wordpress\n"
+"X-Domain: dabdash-for-woocommerce\n"
 
 #. Plugin Name of the plugin
-#: dabdash-sync-for-wordpress.php
-msgid "DabDash Sync for WordPress"
+#: dabdash-for-woocommerce.php
+msgid "DabDash Sync for WooCommerce"
 msgstr ""
 
 #. Plugin URI of the plugin
-#: dabdash-sync-for-wordpress.php
-msgid "https://github.com/shadow-software/dabdash-sync-for-wordpress"
+#: dabdash-for-woocommerce.php
+msgid "https://github.com/shadow-software/dabdash-for-woocommerce"
 msgstr ""
 
 #. Description of the plugin
-#: dabdash-sync-for-wordpress.php
+#: dabdash-for-woocommerce.php
 msgid "Keeps WordPress customers in step with DabDash — verification status, loyalty balance, and marketing consent — with DabDash as the source of truth. Free and open source; requires a DabDash tenant."
 msgstr ""
 
 #. Author of the plugin
-#: dabdash-sync-for-wordpress.php
+#: dabdash-for-woocommerce.php
 msgid "Shadow Software LLC"
 msgstr ""
 
 #. Author URI of the plugin
-#: dabdash-sync-for-wordpress.php
+#: dabdash-for-woocommerce.php
 msgid "https://shadowsoftware.com/"
 msgstr ""
 
-#: dabdash-sync-for-wordpress.php:90
+#: dabdash-for-woocommerce.php:90
 msgid "DabDash Sync is missing its Composer dependencies. Run composer install in the plugin directory, or reinstall from a release ZIP."
 msgstr ""
 
