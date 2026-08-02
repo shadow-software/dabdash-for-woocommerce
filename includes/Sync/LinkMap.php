@@ -17,12 +17,12 @@ final class LinkMap {
 	/**
 	 * Usermeta key for the remote customer id.
 	 */
-	public const META_CUSTOMER_ID = '_dabdash_customer_id';
+	public const META_CUSTOMER_ID = '_dabdash_woo_customer_id';
 
 	/**
 	 * Usermeta key for the last successful sync timestamp (UTC mysql).
 	 */
-	public const META_SYNCED_AT = '_dabdash_synced_at';
+	public const META_SYNCED_AT = '_dabdash_woo_synced_at';
 
 	/**
 	 * DabDash customer id linked to a WP user, or 0.
@@ -37,7 +37,13 @@ final class LinkMap {
 			return 0;
 		}
 
-		return (int) get_user_meta( $user_id, self::META_CUSTOMER_ID, true );
+		$id = (int) get_user_meta( $user_id, self::META_CUSTOMER_ID, true );
+		if ( $id > 0 ) {
+			return $id;
+		}
+
+		// Pre-1.0.1 installs used `_dabdash_customer_id`.
+		return (int) get_user_meta( $user_id, '_dabdash_customer_id', true );
 	}
 
 	/**

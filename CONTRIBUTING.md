@@ -10,7 +10,7 @@ composer install
 composer ci
 ```
 
-Runtime dependency: `shadow-software/dabdash-php-sdk` (VCS until Packagist).
+Runtime dependency: `shadow-software/dabdash-php-sdk` from Packagist (`^0.2`).
 
 ## Gate
 

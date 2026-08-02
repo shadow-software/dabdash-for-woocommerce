@@ -23,6 +23,23 @@ wp_clear_scheduled_hook( 'dabdash_woo_pull' );
 global $wpdb;
 
 $dabdash_woo_meta_keys = array(
+	'_dabdash_woo_customer_id',
+	'_dabdash_woo_synced_at',
+	'_dabdash_woo_local_modified',
+	'_dabdash_woo_id_verified_at',
+	'_dabdash_woo_medical_verified_at',
+	'_dabdash_woo_email_verified_at',
+	'_dabdash_woo_phone_verified_at',
+	'_dabdash_woo_phone_validation_status',
+	'_dabdash_woo_loyalty_points',
+	'_dabdash_woo_no_loyalty',
+	'_dabdash_woo_no_coupons',
+	'_dabdash_woo_deletion_requested_at',
+	'_dabdash_woo_last_login_at',
+	'_dabdash_woo_email_opt_out',
+	'_dabdash_woo_sms_marketing_opt_out',
+	'_dabdash_woo_sms_notifications_muted',
+	// Pre-1.0.1 keys (short `_dabdash_*` form) — delete if present.
 	'_dabdash_customer_id',
 	'_dabdash_synced_at',
 	'_dabdash_local_modified',

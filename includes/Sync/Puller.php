@@ -132,7 +132,7 @@ final class Puller {
 	/**
 	 * Apply one remote customer payload to a matching WordPress user.
 	 *
-	 * Matching order: linked `_dabdash_customer_id`, then email. Users are never
+	 * Matching order: linked `_dabdash_woo_customer_id`, then email. Users are never
 	 * created here — an unmatched DabDash customer is skipped.
 	 *
 	 * @param array<string, mixed> $remote Customer fields from the API.
@@ -153,7 +153,7 @@ final class Puller {
 
 		$local           = $this->read_local( $user );
 		$remote_modified = $this->parse_timestamp( isset( $remote['updated_at'] ) ? $remote['updated_at'] : null );
-		$local_modified  = $this->parse_timestamp( get_user_meta( $user->ID, '_dabdash_local_modified', true ) );
+		$local_modified  = $this->parse_timestamp( get_user_meta( $user->ID, '_dabdash_woo_local_modified', true ) );
 
 		$plan = Applier::plan( $remote, $local, $remote_modified, $local_modified );
 

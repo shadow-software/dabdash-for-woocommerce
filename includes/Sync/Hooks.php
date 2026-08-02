@@ -10,7 +10,7 @@ namespace DabDashSync\Sync;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Stamps `_dabdash_local_modified` when contact or consent fields change locally
+ * Stamps `_dabdash_woo_local_modified` when contact or consent fields change locally
  * so the next pull can propose them upward (consent = most-restrictive).
  */
 final class Hooks {
@@ -31,9 +31,9 @@ final class Hooks {
 		'billing_phone',
 		'first_name',
 		'last_name',
-		'_dabdash_email_opt_out',
-		'_dabdash_sms_marketing_opt_out',
-		'_dabdash_sms_notifications_muted',
+		'_dabdash_woo_email_opt_out',
+		'_dabdash_woo_sms_marketing_opt_out',
+		'_dabdash_woo_sms_notifications_muted',
 	);
 
 	/**
@@ -147,6 +147,6 @@ final class Hooks {
 			return;
 		}
 
-		update_user_meta( $user_id, '_dabdash_local_modified', gmdate( 'c' ) );
+		update_user_meta( $user_id, '_dabdash_woo_local_modified', gmdate( 'c' ) );
 	}
 }

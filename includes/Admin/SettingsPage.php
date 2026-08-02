@@ -14,7 +14,7 @@ use DabDashSync\Sync\FieldMap;
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Admin settings UI (scaffold — connect + field map diagnostics).
+ * Admin settings UI — connect a tenant and review field-map diagnostics.
  */
 final class SettingsPage {
 
@@ -71,7 +71,7 @@ final class SettingsPage {
 			add_settings_error(
 				'dabdash_woo',
 				'bad_host',
-				__( 'API base URL must be a DabDash host (*.dabdash.com). Local hosts are only allowed when WP_DEBUG is on.', 'dabdash-for-woocommerce' ),
+				__( 'API base URL must be a DabDash host (*.dabdash.com or *.dabdash.app). Local hosts are only allowed when WP_DEBUG is on.', 'dabdash-for-woocommerce' ),
 				'error'
 			);
 			return;
@@ -162,6 +162,14 @@ final class SettingsPage {
 				echo SdkFactory::is_configured()
 					? esc_html__( 'API base and token are set. Pull/push jobs will use shadow-software/dabdash-php-sdk.', 'dabdash-for-woocommerce' )
 					: esc_html__( 'Not configured yet.', 'dabdash-for-woocommerce' );
+				?>
+			</p>
+			<p class="description">
+				<?php
+				echo esc_html__(
+					'Plugin Review: email support@shadowsoftware.com for a sandbox DabDash tenant and API token. Credentials are provided in private WordPress.org submission notes, not in this screen.',
+					'dabdash-for-woocommerce'
+				);
 				?>
 			</p>
 

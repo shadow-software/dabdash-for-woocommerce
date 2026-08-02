@@ -7,7 +7,7 @@ Slug: **`dabdash-for-woocommerce`**
 
 ## Ready
 
-- [x] Plugin header + `readme.txt` Stable tag `1.0.0`
+- [x] Plugin header + `readme.txt` Stable tag `1.0.1`
 - [x] Requires WooCommerce (`Requires Plugins: woocommerce`)
 - [x] GPL-2.0-or-later LICENSE
 - [x] External services section (DabDash tenant API + field list)

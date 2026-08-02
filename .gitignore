@@ -8,3 +8,4 @@
 *.zip
 *.log
 .DS_Store
+/docs/REVIEWER-SANDBOX.local.md

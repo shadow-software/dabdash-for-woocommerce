@@ -54,16 +54,16 @@ final class FieldMap {
 	 * @var array<string, string>
 	 */
 	private const CANONICAL_FIELDS = array(
-		'id_verified_at'             => '_dabdash_id_verified_at',
-		'medical_record_verified_at' => '_dabdash_medical_verified_at',
-		'email_verified_at'          => '_dabdash_email_verified_at',
-		'phone_verified_at'          => '_dabdash_phone_verified_at',
-		'phone_validation_status'    => '_dabdash_phone_validation_status',
-		'loyalty_points'             => '_dabdash_loyalty_points',
-		'no_loyalty'                 => '_dabdash_no_loyalty',
-		'no_coupons'                 => '_dabdash_no_coupons',
-		'deletion_requested_at'      => '_dabdash_deletion_requested_at',
-		'last_login_at'              => '_dabdash_last_login_at',
+		'id_verified_at'             => '_dabdash_woo_id_verified_at',
+		'medical_record_verified_at' => '_dabdash_woo_medical_verified_at',
+		'email_verified_at'          => '_dabdash_woo_email_verified_at',
+		'phone_verified_at'          => '_dabdash_woo_phone_verified_at',
+		'phone_validation_status'    => '_dabdash_woo_phone_validation_status',
+		'loyalty_points'             => '_dabdash_woo_loyalty_points',
+		'no_loyalty'                 => '_dabdash_woo_no_loyalty',
+		'no_coupons'                 => '_dabdash_woo_no_coupons',
+		'deletion_requested_at'      => '_dabdash_woo_deletion_requested_at',
+		'last_login_at'              => '_dabdash_woo_last_login_at',
 	);
 
 	/**
@@ -85,16 +85,16 @@ final class FieldMap {
 	 * @var array<string, string>
 	 */
 	private const CONSENT_FIELDS = array(
-		'email_opt_out'           => '_dabdash_email_opt_out',
-		'sms_marketing_opt_out'   => '_dabdash_sms_marketing_opt_out',
-		'sms_notifications_muted' => '_dabdash_sms_notifications_muted',
+		'email_opt_out'           => '_dabdash_woo_email_opt_out',
+		'sms_marketing_opt_out'   => '_dabdash_woo_sms_marketing_opt_out',
+		'sms_notifications_muted' => '_dabdash_woo_sms_notifications_muted',
 	);
 
 	/**
 	 * Never mirrored into WordPress under any setting.
 	 *
 	 * `date_of_birth` is here rather than in CANONICAL on purpose. Age gating is
-	 * satisfied by the derived `_dabdash_is_of_age` flag the API returns; storing
+	 * satisfied by the derived `_dabdash_woo`-derived age flags flag the API returns; storing
 	 * the raw DOB would put a regulated identifier in wp_usermeta for no gain.
 	 *
 	 * @var list<string>

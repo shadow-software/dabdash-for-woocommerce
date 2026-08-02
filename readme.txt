@@ -87,18 +87,40 @@ Yes. This plugin requires WooCommerce 8.2+.
 
 == External services ==
 
-This plugin connects to your **DabDash** tenant API (a host under dabdash.com
-that you configure). After credentials are saved and sync is enabled, it sends
-and receives:
+This plugin connects to your **DabDash** tenant API — a host you configure under
+`*.dabdash.com` or `*.dabdash.app` (local hosts only when `WP_DEBUG` is on).
+Nothing is sent until an API base URL and access token are saved and **Enable
+background sync** is checked.
 
-* Name, email, phone (contact proposals)
-* Verification timestamps and loyalty / coupon flags (DabDash → WooCommerce)
-* Marketing consent / opt-out flags (most-restrictive merge)
+**1. Tenant API (your DabDash host, via shadow-software/dabdash-php-sdk)**
 
-Terms: https://dabdash.com/terms
-Privacy: https://dabdash.com/privacy
+* **What it is for:** keeping WooCommerce customers in step with DabDash
+  verification, loyalty, and marketing consent. DabDash is the source of truth
+  for verification and loyalty; consent merges most-restrictive.
+* **When it is called:** on an Action Scheduler / WP-Cron pull (hourly by
+  default) and when a tracked local profile field changes (push proposal).
+* **What is sent (contact / consent proposals only):** name, email, phone;
+  email / SMS marketing opt-out flags. The plugin never pushes ID documents,
+  medical record numbers, dates of birth, or passwords.
+* **What is received:** verification timestamps, loyalty / coupon flags,
+  consent state, and the DabDash customer id linked on the WordPress user.
+* Transport: HTTPS JSON via the Packagist SDK (Guzzle). Tokens are stored with
+  `autoload` disabled.
+
+**Terms and privacy**
+
+* DabDash Terms: https://dabdash.com/terms
+* DabDash Privacy Policy: https://dabdash.com/privacy
+* Shadow Software Terms: https://shadowsoftware.com/terms
+* Shadow Software Privacy Policy: https://shadowsoftware.com/privacy
 
 == Changelog ==
+
+= 1.1.0 =
+* Usermeta keys use the `dabdash_woo_` prefix family (`_dabdash_woo_*`) for
+  WordPress.org uniqueness; legacy `_dabdash_*` keys still read/uninstall.
+* External services section expanded; Plugin Review sandbox guidance on settings.
+* Host allowlist messaging includes `*.dabdash.app`.
 
 = 1.0.1 =
 * Updated bundled `shadow-software/dabdash-php-sdk` to 6.1.0.
@@ -111,6 +133,10 @@ Privacy: https://dabdash.com/privacy
 * WordPress.org packaging (slug `dabdash-for-woocommerce`).
 
 == Upgrade Notice ==
+
+= 1.0.1 =
+Usermeta keys renamed to `_dabdash_woo_*`. Existing `_dabdash_*` values are
+still read until rewritten by sync.
 
 = 1.0.0 =
 First public release. Requires WooCommerce and a DabDash tenant token.
