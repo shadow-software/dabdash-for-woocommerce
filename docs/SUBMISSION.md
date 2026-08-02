@@ -1,3 +1,6 @@
+> Workspace first-pass gate (read before upload):
+> `/home/shadow/Source/wordpress/docs/wporg/FIRST-PASS-CHECKLIST.md`
+
 # WordPress.org submission — DabDash Sync for WooCommerce
 
 Slug: **`dabdash-for-woocommerce`**
