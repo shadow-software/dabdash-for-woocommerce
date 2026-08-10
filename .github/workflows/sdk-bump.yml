@@ -2,26 +2,38 @@
 #
 # dabdash.com's sdk-dispatch job regenerates the OpenAPI spec on every
 # production deploy and, when it changed, fires a release in dabdash-php-sdk
-# (see shadow-software/sdk-release). That release now cascades here via
+# (see shadow-software/sdk-release). That release cascades here via
 # repository_dispatch (sdk-updated, { package, version }) — see this SDK
 # repo's own .github/workflows/release.yml "Notify downstream consumer" step.
 #
 # This workflow reacts to that event by:
 #   1. widening composer.json's version constraint to match the new SDK
-#      release and refreshing composer.lock
+#      release and refreshing composer.lock (retrying briefly in case
+#      Packagist hasn't finished indexing the tag yet)
 #   2. bumping this plugin's own patch version everywhere it must agree
-#      (release.yml's own tag-verification step enforces this)
-#   3. adding a changelog entry
-#   4. committing to master, then explicitly dispatching release.yml and
-#      deploy.yml for the new tag
+#      (release.yml's own tag-verification step enforces this) via
+#      .github/scripts/bump-plugin-version.sh — see tests/ for its coverage
+#   3. committing to master and tagging, then explicitly triggering
+#      release.yml for the new tag
 #
-# Step 4 deliberately does NOT rely on the tag push itself to trigger those
-# workflows — GITHUB_TOKEN-authored pushes never trigger other Actions
-# workflows (GitHub's anti-recursion guard), so this instead calls their
-# workflow_dispatch entry points directly, which IS allowed.
+# Deliberately scoped to the GitHub Release only — this repo's deploy.yml
+# (WordPress.org SVN publish) is a separate, independent concern and is not
+# triggered from here.
+#
+# Step 3 does NOT rely on the tag push itself to trigger release.yml —
+# GITHUB_TOKEN-authored pushes never trigger other Actions workflows (GitHub's
+# anti-recursion guard) — so this instead calls its workflow_dispatch entry
+# point directly, which IS allowed, with a short retry for the tag ref's
+# eventual-consistency lag.
 #
 # A dispatch that resolves to no actual change (e.g. a duplicate or stale
-# event) is a deliberate no-op — never an empty release.
+# event, or Packagist not yet indexing a version newer than what's already
+# required) is a deliberate no-op — never an empty release. The commit+tag
+# step is the only step whose failure fails the whole job; the SDK-version
+# convergence retry and the release-trigger retry both degrade to a clear
+# ::warning:: on exhaustion rather than masking a release that already
+# happened, or crashing the job over a step with an independent recovery
+# path (workflow_dispatch).
 name: SDK version bump
 
 on:
@@ -58,10 +70,26 @@ jobs:
           php-version: '8.2'
           tools: composer:v2
 
+      - name: Resolve and validate the dispatched SDK version
+        id: sdk-version
+        env:
+          RAW_VERSION: ${{ github.event.client_payload.version || inputs.version }}
+        run: |
+          set -euo pipefail
+          if [ -z "$RAW_VERSION" ]; then
+            echo "::error::No version in the event payload (client_payload.version) or workflow_dispatch input." >&2
+            exit 1
+          fi
+          if ! [[ "$RAW_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::'${RAW_VERSION}' is not a plain X.Y.Z SDK version — refusing to build a Composer constraint from it." >&2
+            exit 1
+          fi
+          echo "version=${RAW_VERSION}" >> "$GITHUB_OUTPUT"
+
       - name: Widen the SDK constraint and refresh the lock file
         id: bump-composer
         env:
-          SDK_VERSION: ${{ github.event.client_payload.version || inputs.version }}
+          SDK_VERSION: ${{ steps.sdk-version.outputs.version }}
         run: |
           set -euo pipefail
           IFS='.' read -r major minor _patch <<< "$SDK_VERSION"
@@ -73,7 +101,27 @@ jobs:
           echo "New SDK version: ${SDK_VERSION} -> constraint ${constraint}"
 
           composer require "shadow-software/dabdash-php-sdk:${constraint}" --no-update --no-interaction
-          composer update shadow-software/dabdash-php-sdk --no-interaction --no-progress --with-all-dependencies
+
+          # Packagist's update-package webhook (fired by the SDK release just
+          # before this workflow was dispatched) is asynchronous — its API can
+          # lag a few seconds behind the tag actually being queryable. Retry
+          # composer update until the lock file actually lands on the
+          # dispatched version, rather than silently resolving to whatever was
+          # already the latest indexed version and reporting "nothing to do".
+          locked_version=""
+          for attempt in 1 2 3 4 5; do
+            composer update shadow-software/dabdash-php-sdk --no-interaction --no-progress --with-all-dependencies
+            locked_version="$(jq -r '.packages[] | select(.name=="shadow-software/dabdash-php-sdk") | .version' composer.lock)"
+            if [ "$locked_version" = "$SDK_VERSION" ]; then
+              break
+            fi
+            echo "Attempt ${attempt}: composer resolved ${locked_version:-<none>}, waiting for Packagist to index ${SDK_VERSION}..."
+            sleep 15
+          done
+
+          if [ "$locked_version" != "$SDK_VERSION" ]; then
+            echo "::warning::Composer never resolved exactly ${SDK_VERSION} (got '${locked_version:-<none>}') after 5 attempts. Proceeding with whatever composer.lock now contains."
+          fi
 
           if git diff --quiet -- composer.json composer.lock; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
@@ -86,50 +134,17 @@ jobs:
         id: version
         if: steps.bump-composer.outputs.changed == 'true'
         env:
-          SDK_VERSION: ${{ github.event.client_payload.version || inputs.version }}
+          SDK_VERSION: ${{ steps.sdk-version.outputs.version }}
         run: |
           set -euo pipefail
-
-          old_version="$(grep -oE '^Stable tag:\s*\S+' readme.txt | awk '{print $NF}')"
-          IFS='.' read -r v_major v_minor v_patch <<< "$old_version"
-          new_version="${v_major}.${v_minor}.$((v_patch + 1))"
-          echo "Bumping plugin version: ${old_version} -> ${new_version}"
-
-          old_esc="$(printf '%s' "$old_version" | sed 's/\./\\./g')"
-
-          sed -i -E "s/^(\s*\*\s*Version:\s*)${old_esc}\$/\1${new_version}/" dabdash-for-woocommerce.php
-          sed -i -E "s/(DABDASH_WOO_VERSION', ')${old_esc}(')/\1${new_version}\2/" dabdash-for-woocommerce.php
-          sed -i -E "s/^(Stable tag:\s*)${old_esc}\$/\1${new_version}/" readme.txt
-
-          awk -v new="$new_version" -v sdk="$SDK_VERSION" '
-            { print }
-            /^== Changelog ==$/ && !done {
-              print ""
-              print "= " new " ="
-              print "* Updated bundled `shadow-software/dabdash-php-sdk` to " sdk "."
-              done = 1
-            }
-          ' readme.txt > readme.txt.new
-          mv readme.txt.new readme.txt
-
+          new_version="$(bash .github/scripts/bump-plugin-version.sh "$SDK_VERSION")"
+          echo "Bumped plugin version to ${new_version}"
           echo "version=${new_version}" >> "$GITHUB_OUTPUT"
-
-      - name: Verify the version now agrees everywhere
-        if: steps.bump-composer.outputs.changed == 'true'
-        run: |
-          set -euo pipefail
-          version="${{ steps.version.outputs.version }}"
-          header="$(grep -oE '^\s*\*\s*Version:\s*\S+' dabdash-for-woocommerce.php | awk '{print $NF}')"
-          const="$(grep -oE "DABDASH_WOO_VERSION',\s*'[^']+'" dabdash-for-woocommerce.php | grep -oE "'[0-9][^']*'" | tr -d "'")"
-          stable="$(grep -oE '^Stable tag:\s*\S+' readme.txt | awk '{print $NF}')"
-          [ "$header" = "$version" ] || { echo "::error::header ($header) != $version"; exit 1; }
-          [ "$const"  = "$version" ] || { echo "::error::const ($const) != $version"; exit 1; }
-          [ "$stable" = "$version" ] || { echo "::error::stable ($stable) != $version"; exit 1; }
 
       - name: Commit and tag
         if: steps.bump-composer.outputs.changed == 'true'
         env:
-          SDK_VERSION: ${{ github.event.client_payload.version || inputs.version }}
+          SDK_VERSION: ${{ steps.sdk-version.outputs.version }}
           NEW_VERSION: ${{ steps.version.outputs.version }}
         run: |
           set -euo pipefail
@@ -141,21 +156,31 @@ jobs:
           git push origin HEAD "${NEW_VERSION}"
 
       # GITHUB_TOKEN-authored pushes never trigger other workflows, so the
-      # tag push above will NOT start release.yml / deploy.yml on its own —
-      # dispatch them explicitly instead.
-      - name: Trigger the release and WordPress.org deploy workflows
+      # tag push above will NOT start release.yml on its own — dispatch it
+      # explicitly. Best-effort: the release commit + tag above already
+      # landed durably, so a failure here is a warning, not a job failure —
+      # it just means release.yml needs a manual workflow_dispatch for this
+      # tag.
+      - name: Trigger the release workflow
         if: steps.bump-composer.outputs.changed == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NEW_VERSION: ${{ steps.version.outputs.version }}
         run: |
-          set -euo pipefail
-          gh workflow run release.yml --ref "${NEW_VERSION}" -f tag="${NEW_VERSION}"
-          gh workflow run deploy.yml --ref "${NEW_VERSION}"
+          set -uo pipefail
+          for attempt in 1 2 3; do
+            if gh workflow run release.yml --ref "${NEW_VERSION}" -f tag="${NEW_VERSION}"; then
+              echo "Triggered release.yml for ${NEW_VERSION}."
+              exit 0
+            fi
+            echo "Attempt ${attempt}: release.yml dispatch failed, retrying..."
+            sleep 5
+          done
+          echo "::warning::Could not trigger release.yml for ${NEW_VERSION} after 3 attempts. The tag is pushed — re-run release.yml manually with workflow_dispatch (tag=${NEW_VERSION})."
 
       - name: Summary
         env:
-          SDK_VERSION: ${{ github.event.client_payload.version || inputs.version }}
+          SDK_VERSION: ${{ steps.sdk-version.outputs.version }}
           CHANGED: ${{ steps.bump-composer.outputs.changed }}
           NEW_VERSION: ${{ steps.version.outputs.version }}
         run: |
