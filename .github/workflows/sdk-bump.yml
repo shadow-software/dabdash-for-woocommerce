@@ -1,0 +1,166 @@
+# Closes the last leg of the DabDash SDK → WooCommerce plugin release chain.
+#
+# dabdash.com's sdk-dispatch job regenerates the OpenAPI spec on every
+# production deploy and, when it changed, fires a release in dabdash-php-sdk
+# (see shadow-software/sdk-release). That release now cascades here via
+# repository_dispatch (sdk-updated, { package, version }) — see this SDK
+# repo's own .github/workflows/release.yml "Notify downstream consumer" step.
+#
+# This workflow reacts to that event by:
+#   1. widening composer.json's version constraint to match the new SDK
+#      release and refreshing composer.lock
+#   2. bumping this plugin's own patch version everywhere it must agree
+#      (release.yml's own tag-verification step enforces this)
+#   3. adding a changelog entry
+#   4. committing to master, then explicitly dispatching release.yml and
+#      deploy.yml for the new tag
+#
+# Step 4 deliberately does NOT rely on the tag push itself to trigger those
+# workflows — GITHUB_TOKEN-authored pushes never trigger other Actions
+# workflows (GitHub's anti-recursion guard), so this instead calls their
+# workflow_dispatch entry points directly, which IS allowed.
+#
+# A dispatch that resolves to no actual change (e.g. a duplicate or stale
+# event) is a deliberate no-op — never an empty release.
+name: SDK version bump
+
+on:
+  repository_dispatch:
+    types: [sdk-updated]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "SDK version to pick up (e.g. 0.3.1)"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: sdk-bump
+  cancel-in-progress: false
+
+jobs:
+  bump:
+    name: Bump SDK dependency and cut a release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: master
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: composer:v2
+
+      - name: Widen the SDK constraint and refresh the lock file
+        id: bump-composer
+        env:
+          SDK_VERSION: ${{ github.event.client_payload.version || inputs.version }}
+        run: |
+          set -euo pipefail
+          IFS='.' read -r major minor _patch <<< "$SDK_VERSION"
+          if [ "$major" = "0" ]; then
+            constraint="^${major}.${minor}"
+          else
+            constraint="^${major}.0"
+          fi
+          echo "New SDK version: ${SDK_VERSION} -> constraint ${constraint}"
+
+          composer require "shadow-software/dabdash-php-sdk:${constraint}" --no-update --no-interaction
+          composer update shadow-software/dabdash-php-sdk --no-interaction --no-progress --with-all-dependencies
+
+          if git diff --quiet -- composer.json composer.lock; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "composer.json/lock unchanged — SDK constraint already covers ${SDK_VERSION}. Nothing to release."
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Bump plugin version everywhere and update the changelog
+        id: version
+        if: steps.bump-composer.outputs.changed == 'true'
+        env:
+          SDK_VERSION: ${{ github.event.client_payload.version || inputs.version }}
+        run: |
+          set -euo pipefail
+
+          old_version="$(grep -oE '^Stable tag:\s*\S+' readme.txt | awk '{print $NF}')"
+          IFS='.' read -r v_major v_minor v_patch <<< "$old_version"
+          new_version="${v_major}.${v_minor}.$((v_patch + 1))"
+          echo "Bumping plugin version: ${old_version} -> ${new_version}"
+
+          old_esc="$(printf '%s' "$old_version" | sed 's/\./\\./g')"
+
+          sed -i -E "s/^(\s*\*\s*Version:\s*)${old_esc}\$/\1${new_version}/" dabdash-for-woocommerce.php
+          sed -i -E "s/(DABDASH_WOO_VERSION', ')${old_esc}(')/\1${new_version}\2/" dabdash-for-woocommerce.php
+          sed -i -E "s/^(Stable tag:\s*)${old_esc}\$/\1${new_version}/" readme.txt
+
+          awk -v new="$new_version" -v sdk="$SDK_VERSION" '
+            { print }
+            /^== Changelog ==$/ && !done {
+              print ""
+              print "= " new " ="
+              print "* Updated bundled `shadow-software/dabdash-php-sdk` to " sdk "."
+              done = 1
+            }
+          ' readme.txt > readme.txt.new
+          mv readme.txt.new readme.txt
+
+          echo "version=${new_version}" >> "$GITHUB_OUTPUT"
+
+      - name: Verify the version now agrees everywhere
+        if: steps.bump-composer.outputs.changed == 'true'
+        run: |
+          set -euo pipefail
+          version="${{ steps.version.outputs.version }}"
+          header="$(grep -oE '^\s*\*\s*Version:\s*\S+' dabdash-for-woocommerce.php | awk '{print $NF}')"
+          const="$(grep -oE "DABDASH_WOO_VERSION',\s*'[^']+'" dabdash-for-woocommerce.php | grep -oE "'[0-9][^']*'" | tr -d "'")"
+          stable="$(grep -oE '^Stable tag:\s*\S+' readme.txt | awk '{print $NF}')"
+          [ "$header" = "$version" ] || { echo "::error::header ($header) != $version"; exit 1; }
+          [ "$const"  = "$version" ] || { echo "::error::const ($const) != $version"; exit 1; }
+          [ "$stable" = "$version" ] || { echo "::error::stable ($stable) != $version"; exit 1; }
+
+      - name: Commit and tag
+        if: steps.bump-composer.outputs.changed == 'true'
+        env:
+          SDK_VERSION: ${{ github.event.client_payload.version || inputs.version }}
+          NEW_VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          set -euo pipefail
+          git config user.name "sdk-bump-bot"
+          git config user.email "noreply@shadowsoftware.com"
+          git add composer.json composer.lock dabdash-for-woocommerce.php readme.txt
+          git commit -m "release: ${NEW_VERSION} — bump shadow-software/dabdash-php-sdk to ${SDK_VERSION}"
+          git tag "${NEW_VERSION}"
+          git push origin HEAD "${NEW_VERSION}"
+
+      # GITHUB_TOKEN-authored pushes never trigger other workflows, so the
+      # tag push above will NOT start release.yml / deploy.yml on its own —
+      # dispatch them explicitly instead.
+      - name: Trigger the release and WordPress.org deploy workflows
+        if: steps.bump-composer.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NEW_VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          set -euo pipefail
+          gh workflow run release.yml --ref "${NEW_VERSION}" -f tag="${NEW_VERSION}"
+          gh workflow run deploy.yml --ref "${NEW_VERSION}"
+
+      - name: Summary
+        env:
+          SDK_VERSION: ${{ github.event.client_payload.version || inputs.version }}
+          CHANGED: ${{ steps.bump-composer.outputs.changed }}
+          NEW_VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          if [ "$CHANGED" = "true" ]; then
+            echo "## Released ${NEW_VERSION} (SDK ${SDK_VERSION})" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "## No release — SDK ${SDK_VERSION} already covered by the existing constraint" >> "$GITHUB_STEP_SUMMARY"
+          fi
