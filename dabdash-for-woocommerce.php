@@ -4,8 +4,8 @@
  * Plugin URI:        https://github.com/shadow-software/dabdash-for-woocommerce
  * Description:       Keeps WooCommerce customers in step with DabDash — verification status, loyalty balance, and marketing consent — with DabDash as the source of truth. Free and open source; requires a DabDash tenant.
  * Version:           1.0.1
- * Requires at least: 6.4
- * Requires PHP:      8.1
+ * Requires at least: 7.0
+ * Requires PHP:      8.2
  * Requires Plugins:  woocommerce
  * Author:            Shadow Software LLC
  * Author URI:        https://shadowsoftware.com/
@@ -15,7 +15,7 @@
  * Domain Path:       /languages
  *
  * WC requires at least: 8.2
- * WC tested up to:      10.8
+ * WC tested up to:      11.0
  *
  * @package DabDashSync
  */
