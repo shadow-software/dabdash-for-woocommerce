@@ -5,7 +5,7 @@ Tags: dabdash, woocommerce, customer-sync, loyalty, consent
 Requires at least: 7.0
 Tested up to: 7.0
 Requires PHP: 8.2
-Stable tag: 1.0.1
+Stable tag: 1.1.0
 WC requires at least: 8.2
 WC tested up to: 11.0
 License: GPLv2 or later
