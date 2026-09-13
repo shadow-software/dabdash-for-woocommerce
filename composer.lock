@@ -543,16 +543,16 @@
         },
         {
             "name": "shadow-software/dabdash-php-sdk",
-            "version": "6.2.1",
+            "version": "6.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/shadow-software/dabdash-php-sdk.git",
-                "reference": "5d98002cf6d3c221338ec2d7fc75a2bd3fbb6821"
+                "reference": "dad3fb630844cbab3917001b729c0726e981983c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/shadow-software/dabdash-php-sdk/zipball/5d98002cf6d3c221338ec2d7fc75a2bd3fbb6821",
-                "reference": "5d98002cf6d3c221338ec2d7fc75a2bd3fbb6821",
+                "url": "https://api.github.com/repos/shadow-software/dabdash-php-sdk/zipball/dad3fb630844cbab3917001b729c0726e981983c",
+                "reference": "dad3fb630844cbab3917001b729c0726e981983c",
                 "shasum": ""
             },
             "require": {
@@ -579,9 +579,9 @@
             "description": "PHP SDK for the DabDash Tenant API",
             "support": {
                 "issues": "https://github.com/shadow-software/dabdash-php-sdk/issues",
-                "source": "https://github.com/shadow-software/dabdash-php-sdk/tree/6.2.1"
+                "source": "https://github.com/shadow-software/dabdash-php-sdk/tree/6.3.0"
             },
-            "time": "2026-08-28T12:31:31+00:00"
+            "time": "2026-09-13T10:39:40+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",

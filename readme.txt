@@ -5,7 +5,7 @@ Tags: dabdash, woocommerce, customer-sync, loyalty, consent
 Requires at least: 7.0
 Tested up to: 7.0
 Requires PHP: 8.5
-Stable tag: 1.1.2
+Stable tag: 1.1.3
 WC requires at least: 8.2
 WC tested up to: 11.0
 License: GPLv2 or later
@@ -115,6 +115,9 @@ background sync** is checked.
 * Shadow Software Privacy Policy: https://shadowsoftware.com/privacy
 
 == Changelog ==
+
+= 1.1.3 =
+* Updated bundled `shadow-software/dabdash-php-sdk` to 6.3.0.
 
 = 1.1.2 =
 * Updated bundled `shadow-software/dabdash-php-sdk` to 6.2.1.
