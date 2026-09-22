@@ -23,7 +23,7 @@ Slug: **`dabdash-for-woocommerce`**
 
 1. **SVN secrets** — `SVN_USERNAME` / `SVN_PASSWORD` on the GitHub repo
 2. **Live Settings screenshot** (replace banner placeholder if still present)
-3. **Reviewer sandbox** — throwaway DabDash tenant + token
+3. **Reviewer sandbox** — `000-creds/.env.plugin-sandboxes` (`shadow-sandbox` tenant + token)
 4. Confirm DabDash public URLs: terms, privacy
 
 ## Installable ZIP
