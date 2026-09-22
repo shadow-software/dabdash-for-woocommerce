@@ -45,7 +45,8 @@ try {
 	$req  = new CustomerListRequest();
 	$req->setLimit( 1 );
 	$resp = $api->customerList( $req );
-	$rows = $resp->getCustomers();
+	$data  = $resp->getData();
+	$rows  = $data ? $data->getCustomers() : array();
 	$count = is_array( $rows ) ? count( $rows ) : 0;
 	echo "✓ customerList OK ({$count} row(s))\n";
 } catch ( Throwable $e ) {

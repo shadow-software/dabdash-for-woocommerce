@@ -25,7 +25,8 @@ if [[ -n "${SMOKE_WP_APP_PASSWORD:-}" && -n "${SMOKE_WP_USER:-}" ]]; then
 	# Authenticated: confirm plugin is installed and active.
 	plugins="$(curl -fsS --max-time 30 -u "${SMOKE_WP_USER}:${SMOKE_WP_APP_PASSWORD}" \
 		"${BASE}/wp-json/wp/v2/plugins?status=active")"
-	echo "$plugins" | grep -q "\"${SLUG}/${SLUG}.php\"" \
+	# wp/v2/plugins JSON escapes slashes in the plugin id string.
+	echo "$plugins" | tr -d '\\' | grep -q "${SLUG}/${SLUG}" \
 		|| { echo "✗ plugin ${SLUG} not active" >&2; exit 1; }
 	echo "✓ plugin active (REST)"
 fi
