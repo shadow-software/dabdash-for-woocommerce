@@ -3,7 +3,7 @@
  * Plugin Name:       DabDash Sync for WooCommerce
  * Plugin URI:        https://github.com/shadow-software/dabdash-for-woocommerce
  * Description:       Keeps WooCommerce customers in step with DabDash — verification status, loyalty balance, and marketing consent — with DabDash as the source of truth. Free and open source; requires a DabDash tenant.
- * Version:           1.1.4
+ * Version:           1.1.5
  * Requires at least: 7.0
  * Requires PHP:      8.5
  * Requires Plugins:  woocommerce
@@ -22,7 +22,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'DABDASH_WOO_VERSION', '1.1.4' );
+define( 'DABDASH_WOO_VERSION', '1.1.5' );
 define( 'DABDASH_WOO_FILE', __FILE__ );
 define( 'DABDASH_WOO_PATH', plugin_dir_path( __FILE__ ) );
 define( 'DABDASH_WOO_URL', plugin_dir_url( __FILE__ ) );

@@ -5,7 +5,7 @@ Tags: dabdash, woocommerce, customer-sync, loyalty, consent
 Requires at least: 7.0
 Tested up to: 7.1
 Requires PHP: 8.5
-Stable tag: 1.1.4
+Stable tag: 1.1.5
 WC requires at least: 8.2
 WC tested up to: 11.0
 License: GPLv2 or later
@@ -18,14 +18,14 @@ Keeps WooCommerce customers in step with DabDash — verification, loyalty, and 
 DabDash Sync connects a WooCommerce store to a
 [DabDash](https://dabdash.com/) tenant so storefront-facing flags stay honest:
 
-* ID / medical / email / phone verification timestamps
+* ID / profile / email / phone verification timestamps
 * Loyalty balance and coupon eligibility
 * Marketing consent (email and SMS) with a **most-restrictive** merge — an
   unsubscribe on either side always wins
 
 DabDash is canonical. WooCommerce may propose contact edits; it cannot forge
-verification or medical state. Sensitive fields (ID images, medical record
-numbers, date of birth) never land in `wp_usermeta`.
+verification or profile compliance state. Sensitive fields (ID images, regulated
+profile identifiers, date of birth) never land in `wp_usermeta`.
 
 Runtime API calls use the official Packagist package
 [`shadow-software/dabdash-php-sdk`](https://packagist.org/packages/shadow-software/dabdash-php-sdk).
@@ -56,7 +56,7 @@ public on [GitHub](https://github.com/shadow-software/dabdash-for-woocommerce).
 
 = What it does not do =
 
-It does not store ID document images, medical documents, or date of birth in
+It does not store ID document images, sensitive profile documents, or date of birth in
 WordPress. It does not invent verification state. It does not send passwords.
 
 == Installation ==
@@ -71,7 +71,7 @@ WordPress. It does not invent verification state. It does not send passwords.
 
 = Does this send customer passwords or ID documents to WordPress? =
 
-No. Passwords, ID images, medical documents, and date of birth are classified
+No. Passwords, ID images, sensitive profile documents, and date of birth are classified
 **never** and are not mirrored.
 
 = What happens if someone unsubscribes in WooCommerce? =
@@ -105,7 +105,7 @@ background sync** is checked.
   default) and when a tracked local profile field changes (push proposal).
 * **What is sent (contact / consent proposals only):** name, email, phone;
   email / SMS marketing opt-out flags. The plugin never pushes ID documents,
-  medical record numbers, dates of birth, or passwords.
+  regulated profile identifiers, dates of birth, or passwords.
 * **What is received:** verification timestamps, loyalty / coupon flags,
   consent state, and the DabDash customer id linked on the WordPress user.
 * Transport: HTTPS JSON via the Packagist SDK (Guzzle). Tokens are stored with
@@ -119,6 +119,9 @@ background sync** is checked.
 * Shadow Software Privacy Policy: https://shadowsoftware.com/privacy
 
 == Changelog ==
+
+= 1.1.5 =
+* WordPress.org readme: neutral compliance/profile language in directory copy.
 
 = 1.1.4 =
 * Strip OpenAPI SDK dev artifacts (`git_push.sh`, etc.) from release ZIPs; enforce
