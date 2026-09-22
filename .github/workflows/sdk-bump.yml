@@ -16,9 +16,9 @@
 #   3. committing to master and tagging, then explicitly triggering
 #      release.yml for the new tag
 #
-# Deliberately scoped to the GitHub Release only — this repo's deploy.yml
-# (WordPress.org SVN publish) is a separate, independent concern and is not
-# triggered from here.
+# After commit+tag, explicitly dispatches release.yml and deploy.yml — tag
+# pushes from GITHUB_TOKEN never trigger other workflows (GitHub's anti-recursion
+# guard). deploy.yml still no-ops when SVN secrets are unset.
 #
 # Step 3 does NOT rely on the tag push itself to trigger release.yml —
 # GITHUB_TOKEN-authored pushes never trigger other Actions workflows (GitHub's
