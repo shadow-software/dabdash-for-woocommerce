@@ -2,7 +2,7 @@
 /**
  * Thin live smoke — runs inside WordPress via `wp eval-file`.
  *
- * Proves SdkFactory + customerList against the configured tenant API.
+ * Proves SdkFactory + customerList against the configured official sandbox API.
  * Does not create customers (read-only ping + one pull page when sync enabled).
  *
  * @package DabDashSync

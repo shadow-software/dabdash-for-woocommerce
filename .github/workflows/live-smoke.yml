@@ -1,7 +1,8 @@
 name: Live smoke
 
 # Deploy release layout to cannabisdigest.net over SSH, run REST + wp eval-file
-# smoke against Verde Ruta, roll back the plugin tree on any failure.
+# smoke against the official shadow-sandbox tenant, roll back the plugin tree
+# on any failure.
 #
 # Secrets (repo settings):
 #   SMOKE_SSH_HOST              e.g. deploy@104.x.x.x
@@ -10,6 +11,7 @@ name: Live smoke
 #   SMOKE_SITE_URL              https://cannabisdigest.net
 #   SMOKE_WP_USER               WP admin username for REST checks
 #   SMOKE_WP_APP_PASSWORD       application password (spaces ok)
+#   DABDASH_SANDBOX_API_BASE   official sandbox tenant API base URL
 #   SDK_RELEASE_TOKEN           composer github oauth (private SDK)
 #
 # Local debugging: Brave MCP browser tools can inspect wp-admin; CI uses REST only.
