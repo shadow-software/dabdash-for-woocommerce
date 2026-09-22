@@ -3,7 +3,7 @@ Contributors: shadowsoftware
 Donate link: https://shadowsoftware.com/
 Tags: dabdash, woocommerce, customer-sync, loyalty, consent
 Requires at least: 7.0
-Tested up to: 7.0
+Tested up to: 7.1
 Requires PHP: 8.5
 Stable tag: 1.1.3
 WC requires at least: 8.2
