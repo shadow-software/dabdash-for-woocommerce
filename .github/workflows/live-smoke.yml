@@ -11,8 +11,9 @@ name: Live smoke
 #   SMOKE_SITE_URL              https://cannabisdigest.net
 #   SMOKE_WP_USER               WP admin username for REST checks
 #   SMOKE_WP_APP_PASSWORD       application password (spaces ok)
-#   DABDASH_SANDBOX_API_BASE   official sandbox tenant API base URL
 #   SDK_RELEASE_TOKEN           composer github oauth (private SDK)
+# The remote WordPress site holds the token-backed connection to the official
+# shadow-sandbox tenant; no sandbox credential is embedded in this workflow.
 #
 # Local debugging: Brave MCP browser tools can inspect wp-admin; CI uses REST only.
 on:
