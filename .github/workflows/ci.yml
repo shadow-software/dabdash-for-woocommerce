@@ -92,6 +92,7 @@ jobs:
           dest="${{ runner.temp }}/${slug}"
           mkdir -p "$dest"
           rsync -a --exclude-from=.distignore ./ "$dest/"
+          bash .github/prune-vendor-dev.sh "$dest"
           test -f "$dest/vendor/autoload.php"
           echo "PLUGIN_DIR=$dest" >> "$GITHUB_ENV"
 
