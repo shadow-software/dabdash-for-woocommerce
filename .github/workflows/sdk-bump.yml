@@ -76,6 +76,12 @@ jobs:
           RAW_VERSION: ${{ github.event.client_payload.version || inputs.version }}
         run: |
           set -euo pipefail
+          package="${{ github.event.client_payload.package }}"
+          if [ -n "$package" ] && [ "$package" != "shadow-software/dabdash-php-sdk" ]; then
+            echo "::notice::sdk-updated dispatch was for ${package}, not dabdash-php-sdk — nothing for this repo to do."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
           if [ -z "$RAW_VERSION" ]; then
             echo "::error::No version in the event payload (client_payload.version) or workflow_dispatch input." >&2
             exit 1
@@ -86,12 +92,25 @@ jobs:
           fi
           echo "version=${RAW_VERSION}" >> "$GITHUB_OUTPUT"
 
+      - name: Record the currently locked dabdash-php-sdk version
+        id: before
+        if: steps.sdk-version.outputs.skip != 'true'
+        run: |
+          set -euo pipefail
+          before="$(jq -r '.packages[] | select(.name=="shadow-software/dabdash-php-sdk") | .version' composer.lock)"
+          echo "version=${before}" >> "$GITHUB_OUTPUT"
+
       - name: Widen the SDK constraint and refresh the lock file
         id: bump-composer
+        if: steps.sdk-version.outputs.skip != 'true'
         env:
+          GH_TOKEN: ${{ secrets.SDK_RELEASE_TOKEN }}
           SDK_VERSION: ${{ steps.sdk-version.outputs.version }}
         run: |
           set -euo pipefail
+          if [ -n "$GH_TOKEN" ]; then
+            composer config --global github-oauth.github.com "$GH_TOKEN"
+          fi
           IFS='.' read -r major minor _patch <<< "$SDK_VERSION"
           if [ "$major" = "0" ]; then
             constraint="^${major}.${minor}"
@@ -123,16 +142,24 @@ jobs:
             echo "::warning::Composer never resolved exactly ${SDK_VERSION} (got '${locked_version:-<none>}') after 5 attempts. Proceeding with whatever composer.lock now contains."
           fi
 
-          if git diff --quiet -- composer.json composer.lock; then
+      - name: Stop here if the locked SDK version didn't actually change
+        id: diff
+        if: steps.sdk-version.outputs.skip != 'true'
+        run: |
+          set -euo pipefail
+          after="$(jq -r '.packages[] | select(.name=="shadow-software/dabdash-php-sdk") | .version' composer.lock)"
+          if [ "${{ steps.before.outputs.version }}" = "$after" ]; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
-            echo "composer.json/lock unchanged — SDK constraint already covers ${SDK_VERSION}. Nothing to release."
+            echo "dabdash-php-sdk is already locked at ${after} — nothing to release."
+            git checkout -- composer.json composer.lock
           else
             echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "dabdash-php-sdk ${{ steps.before.outputs.version }} -> ${after}"
           fi
 
       - name: Bump plugin version everywhere and update the changelog
         id: version
-        if: steps.bump-composer.outputs.changed == 'true'
+        if: steps.diff.outputs.changed == 'true'
         env:
           SDK_VERSION: ${{ steps.sdk-version.outputs.version }}
         run: |
@@ -142,7 +169,7 @@ jobs:
           echo "version=${new_version}" >> "$GITHUB_OUTPUT"
 
       - name: Commit and tag
-        if: steps.bump-composer.outputs.changed == 'true'
+        if: steps.diff.outputs.changed == 'true'
         env:
           SDK_VERSION: ${{ steps.sdk-version.outputs.version }}
           NEW_VERSION: ${{ steps.version.outputs.version }}
@@ -162,7 +189,7 @@ jobs:
       # it just means release.yml needs a manual workflow_dispatch for this
       # tag.
       - name: Trigger the release workflow
-        if: steps.bump-composer.outputs.changed == 'true'
+        if: steps.diff.outputs.changed == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NEW_VERSION: ${{ steps.version.outputs.version }}
@@ -178,10 +205,29 @@ jobs:
           done
           echo "::warning::Could not trigger release.yml for ${NEW_VERSION} after 3 attempts. The tag is pushed — re-run release.yml manually with workflow_dispatch (tag=${NEW_VERSION})."
 
+      # GITHUB_TOKEN tag pushes do not trigger deploy.yml either — dispatch it
+      # explicitly. deploy.yml no-ops when SVN secrets are unset.
+      - name: Trigger the WordPress.org deploy workflow
+        if: steps.diff.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NEW_VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          set -uo pipefail
+          for attempt in 1 2 3; do
+            if gh workflow run deploy.yml --ref "${NEW_VERSION}"; then
+              echo "Triggered deploy.yml for ${NEW_VERSION}."
+              exit 0
+            fi
+            echo "Attempt ${attempt}: deploy.yml dispatch failed, retrying..."
+            sleep 5
+          done
+          echo "::warning::Could not trigger deploy.yml for ${NEW_VERSION} after 3 attempts. Re-run deploy.yml manually with workflow_dispatch."
+
       - name: Summary
         env:
           SDK_VERSION: ${{ steps.sdk-version.outputs.version }}
-          CHANGED: ${{ steps.bump-composer.outputs.changed }}
+          CHANGED: ${{ steps.diff.outputs.changed }}
           NEW_VERSION: ${{ steps.version.outputs.version }}
         run: |
           if [ "$CHANGED" = "true" ]; then

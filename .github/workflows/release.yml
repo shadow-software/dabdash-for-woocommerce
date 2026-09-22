@@ -140,6 +140,13 @@ jobs:
             body="See the changelog in readme.txt."
           fi
 
+          wp_org_url="https://wordpress.org/plugins/dabdash-for-woocommerce/"
+          if curl -fsS -o /dev/null "$wp_org_url"; then
+            wp_org_line="**Also on WordPress.org:** ${wp_org_url}"
+          else
+            wp_org_line="**Coming soon to WordPress.org.** Not yet published — install from the ZIP below for now."
+          fi
+
           {
             echo "## DabDash Sync for WooCommerce ${version}"
             echo
@@ -149,7 +156,7 @@ jobs:
             echo
             echo "**Install:** download \`dabdash-for-woocommerce.${version}.zip\` below, then in your WordPress admin go to **Plugins → Add New → Upload Plugin**, choose the ZIP, and click **Install Now**. Requires a DabDash tenant API base URL and access token."
             echo
-            echo "**Also on WordPress.org:** https://wordpress.org/plugins/dabdash-for-woocommerce/"
+            echo "$wp_org_line"
             echo
             echo "**Documentation & source:** https://github.com/shadow-software/dabdash-for-woocommerce#readme"
             echo
