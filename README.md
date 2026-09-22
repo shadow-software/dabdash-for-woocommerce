@@ -21,6 +21,16 @@
 </p>
 
 <p align="center">
+  <b><a href="https://dabdash.com/">Platform</a></b>
+  &nbsp;·&nbsp;
+  <a href="https://dabdash.com/docs/api">API docs</a>
+  &nbsp;·&nbsp;
+  <a href="https://github.com/shadow-software/dabdash-sdk">TypeScript SDK</a>
+  &nbsp;·&nbsp;
+  <a href="https://packagist.org/packages/shadow-software/dabdash-php-sdk">PHP SDK</a>
+</p>
+
+<p align="center">
   <a href="https://github.com/shadow-software/dabdash-for-woocommerce/releases/latest">Download the latest ZIP</a>
   &nbsp;·&nbsp;
   <a href="#installation">Installation</a>
@@ -140,7 +150,7 @@ composer ci       # all three
 
 Runtime API client:
 [`shadow-software/dabdash-php-sdk`](https://packagist.org/packages/shadow-software/dabdash-php-sdk)
-(`^0.2`, Packagist).
+(`^6.0`, Packagist).
 
 WordPress.org submission status: [docs/SUBMISSION.md](docs/SUBMISSION.md).
 
@@ -178,33 +188,14 @@ owners; this plugin is an independent, unofficial integration.
 
 ---
 
-## Also by Shadow Software
-
-**WordPress & WooCommerce**
+## DabDash ecosystem
 
 | | |
 |---|---|
-| [**Broadside**](https://github.com/shadow-software/broadside-theme-for-wordpress) | A broadsheet block theme for WordPress — blackletter masthead, folio rule, three-column lead grid. |
-| [**Broadside Blocks**](https://github.com/shadow-software/broadside-blocks-for-wordpress) | The editorial furniture that ships with it — short answer, takeaways, contents, FAQ schema, sources. |
-| [**Crypto for WooCommerce**](https://github.com/shadow-software/crypto-for-woocommerce) | Free, self-custodial crypto payments — ETH, USDC, USDT & Bitcoin, confirmed on-chain. [On WordPress.org →](https://wordpress.org/plugins/shadow-software-crypto-for-woocommerce/) |
-| [**AGT Sync for WooCommerce**](https://github.com/shadow-software/agt-for-woocommerce) | Sync your WooCommerce store with your American Gun Trader dealer listings. |
-| [**DabDash Sync for WooCommerce**](https://github.com/shadow-software/dabdash-for-woocommerce) | Verification, loyalty, and consent — DabDash as the source of truth. |
-
-**SDKs**
-
-| | |
-|---|---|
-| [`shadow-software/agt-php-sdk`](https://github.com/shadow-software/agt-php-sdk) | PHP client for the AGT Dealer API (Packagist). |
-| [`shadow-software/dabdash-php-sdk`](https://github.com/shadow-software/dabdash-php-sdk) | PHP client for the DabDash Tenant API (Packagist). |
-| [`@shadow-software/agt-sdk`](https://github.com/shadow-software/agt-sdk) | TypeScript client for the AGT Dealer API (npm). |
-| [`@shadow-software/dabdash-sdk`](https://github.com/shadow-software/dabdash-sdk) | TypeScript client for the DabDash Tenant API (npm). |
-
-**n8n**
-
-| | |
-|---|---|
-| [**n8n-nodes-huggingface-space**](https://github.com/shadow-software/n8n-nodes-huggingface-space) | Run inference on any Hugging Face Gradio Space from n8n. |
-| [**n8n-nodes-custom-exec-node**](https://github.com/shadow-software/n8n-nodes-custom-exec-node) | Brings back `bash` in n8n, which v2.0 removed. |
+| [dabdash.com](https://dabdash.com) | Platform & tenant storefronts |
+| [API reference](https://dabdash.com/docs/api) | Tenant API docs & OpenAPI spec |
+| [`@shadow-software/dabdash-sdk`](https://github.com/shadow-software/dabdash-sdk) | TypeScript SDK |
+| [`shadow-software/dabdash-php-sdk`](https://packagist.org/packages/shadow-software/dabdash-php-sdk) | PHP SDK (Packagist) |
 
 <p align="center">
   <sub><a href="https://shadowsoftware.com/">shadowsoftware.com</a> · GPL-2.0-or-later · © 2026 Shadow Software LLC</sub>

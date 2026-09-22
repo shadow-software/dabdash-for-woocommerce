@@ -36,6 +36,10 @@ public on [GitHub](https://github.com/shadow-software/dabdash-for-woocommerce).
 
 = Documentation and source code =
 
+* Platform: https://dabdash.com/
+* API reference: https://dabdash.com/docs/api
+* TypeScript SDK: https://github.com/shadow-software/dabdash-sdk
+* Plugin page: https://dabdash.com/integrations/woocommerce
 * Documentation: https://github.com/shadow-software/dabdash-for-woocommerce#readme
 * Source code and releases: https://github.com/shadow-software/dabdash-for-woocommerce
 * Report a bug or request a feature: https://github.com/shadow-software/dabdash-for-woocommerce/issues
