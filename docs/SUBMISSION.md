@@ -36,7 +36,9 @@ Slug: **`dabdash-for-woocommerce`**
 
 ## Still needed before / during review
 
-1. **SVN secrets** — `SVN_USERNAME` / `SVN_PASSWORD` on the GitHub repo
+1. **SVN access** — the local publisher uses `000-creds/.env.wordpress.org`
+   (or `SVN_USERNAME` / `SVN_PASSWORD`); the GitHub workflow remains available
+   but is not the laptop release path.
 2. **Live Settings screenshot** (replace banner placeholder if still present)
 3. **Reviewer sandbox** — `000-creds/.env.plugin-sandboxes` (`shadow-sandbox` tenant + token)
 4. Confirm DabDash public URLs: terms, privacy
@@ -49,4 +51,11 @@ release layout (which applies `.distignore`) before any future upload:
 ```bash
 composer install --no-dev --prefer-dist --no-interaction
 bash .github/scripts/build-release-layout.sh /tmp/dabdash-for-woocommerce
+```
+
+Publish a ready release from the laptop, with a dry run available first:
+
+```bash
+DRY_RUN=1 bash scripts/deploy-wporg-svn.sh 1.1.6
+bash scripts/deploy-wporg-svn.sh 1.1.6
 ```
