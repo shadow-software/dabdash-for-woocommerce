@@ -1,7 +1,7 @@
 # WordPress.org review incident — DabDash 1.1.5
 
-Date recorded: 2026-09-28  
-Review ID: `RMT dabdash-for-woocommerce/shadowsoftware/22Sep26/T2 26Sep26/4.2`  
+Date recorded: 2026-09-28
+Review ID: `RMT dabdash-for-woocommerce/shadowsoftware/22Sep26/T2 26Sep26/4.2`
 Trigger: manual WordPress.org review of `dabdash-for-woocommerce.1.1.5-sandbox.zip`
 
 ## Findings
