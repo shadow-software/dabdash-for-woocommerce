@@ -19,6 +19,21 @@ Slug: **`dabdash-for-woocommerce`**
 - [x] Strict Plugin Check CI job
 - [x] Slug/name free of the restricted term “wordpress”
 
+## Current review state
+
+- **Corrected version:** 1.1.6
+- **Review finding:** RMT `dabdash-for-woocommerce/shadowsoftware/22Sep26/T2` (received 2026-09-26)
+- **Corrected package:** built locally with the exact slug root `dabdash-for-woocommerce/`; upload remains a WordPress.org web-form action.
+
+## Resolved review findings
+
+- [x] DabDash Terms URL corrected to `/terms-of-service`.
+- [x] DabDash Privacy URL corrected to `/privacy-policy`.
+- [x] OpenAPI generator metadata removed from the runtime vendor distribution.
+- [x] Remote pulls can no longer change WordPress user display names or email addresses; local contact edits remain proposal-only outbound sync.
+- [x] PHPUnit, PHPCS, PHPStan, syntax checks, and clean runtime package verification passed locally.
+- [x] Full incident record: `docs/INCIDENTS/2026-09-28-wporg-review.md`.
+
 ## Still needed before / during review
 
 1. **SVN secrets** — `SVN_USERNAME` / `SVN_PASSWORD` on the GitHub repo
