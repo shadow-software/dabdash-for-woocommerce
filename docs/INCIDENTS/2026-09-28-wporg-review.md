@@ -30,3 +30,12 @@ display name through the scheduled pull.
 Every future WordPress.org package must be built from a clean `--no-dev`
 Composer install, passed through `.github/prune-vendor-dev.sh`, checked for
 the exact slug root, and scanned for generator metadata before upload.
+
+## Follow-up packaging incident
+
+The first 1.1.6 replacement archive was staged manually without applying
+`.distignore`, which leaked `.github/scripts/` and caused WordPress.org to
+return `Error in file upload` listing those scripts. The replacement archive
+was rebuilt with the repository release sequence (`composer install --no-dev`,
+`rsync --exclude-from=.distignore`, vendor pruning, exact slug root) and its
+contents were checked before upload.
