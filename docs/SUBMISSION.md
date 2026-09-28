@@ -7,7 +7,7 @@ Slug: **`dabdash-for-woocommerce`**
 
 ## Ready
 
-- [x] Plugin header + `readme.txt` Stable tag `1.0.1`
+- [x] Plugin header + `readme.txt` Stable tag `1.1.6`
 - [x] Requires WooCommerce (`Requires Plugins: woocommerce`)
 - [x] GPL-2.0-or-later LICENSE
 - [x] External services section (DabDash tenant API + field list)
@@ -23,7 +23,7 @@ Slug: **`dabdash-for-woocommerce`**
 
 - **Corrected version:** 1.1.6
 - **Review finding:** RMT `dabdash-for-woocommerce/shadowsoftware/22Sep26/T2` (received 2026-09-26)
-- **Corrected package:** built locally with the exact slug root `dabdash-for-woocommerce/`; upload remains a WordPress.org web-form action.
+- **Corrected package:** built locally with the exact slug root `dabdash-for-woocommerce/` and uploaded through the WordPress.org web form; review outcome is pending.
 
 ## Resolved review findings
 
@@ -43,6 +43,10 @@ Slug: **`dabdash-for-woocommerce`**
 
 ## Installable ZIP
 
+The current installable artifact is release `1.1.6`. Build it from the repository
+release layout (which applies `.distignore`) before any future upload:
+
 ```bash
-git tag 1.0.0 && git push origin 1.0.0
+composer install --no-dev --prefer-dist --no-interaction
+bash .github/scripts/build-release-layout.sh /tmp/dabdash-for-woocommerce
 ```
