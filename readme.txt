@@ -5,7 +5,7 @@ Tags: dabdash, woocommerce, customer-sync, loyalty, consent
 Requires at least: 7.0
 Tested up to: 7.1
 Requires PHP: 8.5
-Stable tag: 1.1.5
+Stable tag: 1.1.6
 WC requires at least: 8.2
 WC tested up to: 11.0
 License: GPLv2 or later
@@ -113,12 +113,15 @@ background sync** is checked.
 
 **Terms and privacy**
 
-* DabDash Terms: https://dabdash.com/terms
-* DabDash Privacy Policy: https://dabdash.com/privacy
+* DabDash Terms: https://dabdash.com/terms-of-service
+* DabDash Privacy Policy: https://dabdash.com/privacy-policy
 * Shadow Software Terms: https://shadowsoftware.com/terms
 * Shadow Software Privacy Policy: https://shadowsoftware.com/privacy
 
 == Changelog ==
+
+= 1.1.6 =
+* Remove remote writes to WordPress user identity fields, correct public legal URLs, and exclude OpenAPI generator metadata from the distribution archive.
 
 = 1.1.5 =
 * WordPress.org readme: neutral compliance/profile language in directory copy.

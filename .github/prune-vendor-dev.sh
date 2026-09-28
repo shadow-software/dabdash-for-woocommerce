@@ -17,6 +17,11 @@ find "${root}/vendor" -type f \( \
   -o -name '.openapi-generator-ignore' \
   \) -delete
 
+# The generator metadata directory contains FILES/VERSION manifests and other
+# build-time artifacts that are not runtime dependencies and are rejected by
+# the WordPress.org plugin review.
+find "${root}/vendor" -type d -name '.openapi-generator' -prune -exec rm -rf {} +
+
 find "${root}/vendor" -type d \( -name test -o -name tests -o -name '.github' \) -exec rm -rf {} + 2>/dev/null || true
 
 if find "${root}" -name 'git_push.sh' | grep -q .; then

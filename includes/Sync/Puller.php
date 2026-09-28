@@ -136,7 +136,9 @@ final class Puller {
 	 * created here — an unmatched DabDash customer is skipped.
 	 *
 	 * @param array<string, mixed> $remote Customer fields from the API.
-	 * @return bool Whether a WP user was updated.
+	 * Contact identity fields are intentionally proposal-only: remote customer
+	 * data may not change a WordPress user's display name or email address.
+	 * @return bool Whether a WP user was updated or linked.
 	 */
 	public function apply_customer( array $remote ) {
 		$customer_id = isset( $remote['id'] ) ? (int) $remote['id'] : 0;

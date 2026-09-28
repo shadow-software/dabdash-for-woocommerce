@@ -93,7 +93,7 @@ final class ApplierTest extends BaseTestCase {
 		$this->assertArrayNotHasKey( 'medical_patient_number', $plan['writes'] );
 		$this->assertArrayNotHasKey( 'password', $plan['writes'] );
 		$this->assertArrayNotHasKey( 'date_of_birth', $plan['proposes'] );
-		$this->assertSame( 'a@example.test', $plan['writes']['email'] );
+		$this->assertArrayNotHasKey( 'email', $plan['writes'] );
 	}
 
 	/**
@@ -119,7 +119,7 @@ final class ApplierTest extends BaseTestCase {
 	}
 
 	/**
-	 * Without timestamps, contact defaults to remote and does not propose.
+	 * Without timestamps, contact defaults to remote but is never written into WP.
 	 */
 	public function test_contact_defaults_to_remote_without_timestamps() {
 		$plan = Applier::plan(
@@ -131,7 +131,7 @@ final class ApplierTest extends BaseTestCase {
 			)
 		);
 
-		$this->assertSame( 'Remote', $plan['writes']['name'] );
+		$this->assertArrayNotHasKey( 'name', $plan['writes'] );
 		$this->assertArrayNotHasKey( 'name', $plan['proposes'] );
 	}
 

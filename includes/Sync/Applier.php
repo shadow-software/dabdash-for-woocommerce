@@ -75,10 +75,9 @@ final class Applier {
 			if ( FieldMap::CONTACT === $class ) {
 				$result = Resolver::resolveContact( $remote_value, $local_value, $remote_modified, $local_modified );
 
-				if ( ! Resolver::equivalent( $result['value'], $local_value ) ) {
-					$writes[ $field ] = $result['value'];
-				}
-
+				// Contact values are never written from the remote service into a WP user.
+				// The remote service may propose a local edit back to DabDash, but it must
+				// not have remote-administration power over account identity fields.
 				if ( ! empty( $result['propose'] ) ) {
 					$proposes[ $field ] = $result['value'];
 				}
