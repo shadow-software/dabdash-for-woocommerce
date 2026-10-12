@@ -40,7 +40,7 @@ Slug: **`dabdash-for-woocommerce`**
    (or `SVN_USERNAME` / `SVN_PASSWORD`); the GitHub workflow remains available
    but is not the laptop release path.
 2. **Live Settings screenshot** (replace banner placeholder if still present)
-3. **Reviewer sandbox** — `000-creds/.env.plugin-sandboxes` (`shadow-sandbox` tenant + token)
+3. **Reviewer sandbox** — `000-creds/.env.plugin-sandboxes` (`sandbox` tenant + token)
 4. Confirm DabDash public URLs: terms, privacy
 
 ## Installable ZIP

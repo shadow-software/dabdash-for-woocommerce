@@ -28,7 +28,7 @@ On failure after deploy: `bash .github/scripts/live-smoke-rollback.sh`
 ## Official sandbox
 
 The plugin's external-review and API smoke tests use the dedicated
-`shadow-sandbox` tenant. Store its stable token as a CI secret named
+`sandbox` tenant. Store its stable token as a CI secret named
 `DABDASH_SANDBOX_TOKEN`; do not put it in the plugin, repository, or public
 review notes. The platform's hourly `sandbox:reconcile` task preserves the
 token and refreshes synthetic fixtures. See the [platform sandbox guide](https://dabdash.com/docs/official-sandbox).
