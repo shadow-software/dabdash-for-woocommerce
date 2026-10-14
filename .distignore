@@ -18,6 +18,7 @@
 
 # Documentation (readme.txt is the user-facing one and is NOT ignored)
 /README.md
+/AGENTS.md
 /CONTRIBUTING.md
 /SECURITY.md
 
