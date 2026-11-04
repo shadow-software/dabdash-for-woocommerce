@@ -550,16 +550,16 @@
         },
         {
             "name": "shadow-software/dabdash-php-sdk",
-            "version": "6.6.2",
+            "version": "6.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/shadow-software/dabdash-php-sdk.git",
-                "reference": "c961930385a9d5cd64ab9960759dcf0c8957aea8"
+                "reference": "2d7579c4c8f9d975c6e9db93cd85737762288efa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/shadow-software/dabdash-php-sdk/zipball/c961930385a9d5cd64ab9960759dcf0c8957aea8",
-                "reference": "c961930385a9d5cd64ab9960759dcf0c8957aea8",
+                "url": "https://api.github.com/repos/shadow-software/dabdash-php-sdk/zipball/2d7579c4c8f9d975c6e9db93cd85737762288efa",
+                "reference": "2d7579c4c8f9d975c6e9db93cd85737762288efa",
                 "shasum": ""
             },
             "require": {
@@ -587,10 +587,10 @@
             "homepage": "https://dabdash.com/docs/api",
             "support": {
                 "issues": "https://github.com/shadow-software/dabdash-php-sdk/issues",
-                "source": "https://github.com/shadow-software/dabdash-php-sdk/tree/6.6.2"
+                "source": "https://github.com/shadow-software/dabdash-php-sdk/tree/6.7.0"
             },
-            "time": "2026-10-30T00:57:12+00:00",
-            "published-time": "2026-10-30T00:57:17+00:00"
+            "time": "2026-11-04T05:12:11+00:00",
+            "published-time": "2026-11-04T05:12:15+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
