@@ -550,16 +550,16 @@
         },
         {
             "name": "shadow-software/dabdash-php-sdk",
-            "version": "6.7.0",
+            "version": "6.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/shadow-software/dabdash-php-sdk.git",
-                "reference": "2d7579c4c8f9d975c6e9db93cd85737762288efa"
+                "reference": "f1a9de057f2925095b0fb1a7373ee097c0823e51"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/shadow-software/dabdash-php-sdk/zipball/2d7579c4c8f9d975c6e9db93cd85737762288efa",
-                "reference": "2d7579c4c8f9d975c6e9db93cd85737762288efa",
+                "url": "https://api.github.com/repos/shadow-software/dabdash-php-sdk/zipball/f1a9de057f2925095b0fb1a7373ee097c0823e51",
+                "reference": "f1a9de057f2925095b0fb1a7373ee097c0823e51",
                 "shasum": ""
             },
             "require": {
@@ -587,23 +587,23 @@
             "homepage": "https://dabdash.com/docs/api",
             "support": {
                 "issues": "https://github.com/shadow-software/dabdash-php-sdk/issues",
-                "source": "https://github.com/shadow-software/dabdash-php-sdk/tree/6.7.0"
+                "source": "https://github.com/shadow-software/dabdash-php-sdk/tree/6.8.1"
             },
-            "time": "2026-11-04T05:12:11+00:00",
-            "published-time": "2026-11-04T05:12:15+00:00"
+            "time": "2026-11-09T09:41:53+00:00",
+            "published-time": "2026-11-09T09:41:57+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
-            "version": "v3.7.1",
+            "version": "v3.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/deprecation-contracts.git",
-                "reference": "f3202fa1b5097b0af062dc978b32ecf63404e31d"
+                "reference": "feb1edf4e546af3b85c5caebe8359a20db230ca3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/deprecation-contracts/zipball/f3202fa1b5097b0af062dc978b32ecf63404e31d",
-                "reference": "f3202fa1b5097b0af062dc978b32ecf63404e31d",
+                "url": "https://api.github.com/repos/symfony/deprecation-contracts/zipball/feb1edf4e546af3b85c5caebe8359a20db230ca3",
+                "reference": "feb1edf4e546af3b85c5caebe8359a20db230ca3",
                 "shasum": ""
             },
             "require": {
@@ -616,7 +616,7 @@
                     "name": "symfony/contracts"
                 },
                 "branch-alias": {
-                    "dev-main": "3.7-dev"
+                    "dev-main": "3.8-dev"
                 }
             },
             "autoload": {
@@ -641,7 +641,7 @@
             "description": "A generic function and convention to trigger deprecation notices",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/deprecation-contracts/tree/v3.7.1"
+                "source": "https://github.com/symfony/deprecation-contracts/tree/v3.8.1"
             },
             "funding": [
                 {
@@ -661,8 +661,8 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-06-05T06:23:12+00:00",
-            "published-time": "2026-06-27T21:46:34+00:00"
+            "time": "2026-09-16T14:15:10+00:00",
+            "published-time": "2026-11-04T11:25:34+00:00"
         },
         {
             "name": "symfony/polyfill-php80",
