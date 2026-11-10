@@ -37,6 +37,13 @@
 		</properties>
 		<exclude-pattern>*/includes/*</exclude-pattern>
 	</rule>
+	<rule ref="WordPress.WP.Capabilities">
+		<properties>
+			<property name="custom_capabilities" type="array">
+				<element value="manage_woocommerce"/>
+			</property>
+		</properties>
+	</rule>
 
 	<!--
 		Sync\FieldMap and Sync\Resolver are pure domain objects with camelCase

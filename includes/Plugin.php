@@ -8,6 +8,7 @@
 namespace DabDashSync;
 
 use DabDashSync\Admin\SettingsPage;
+use DabDashSync\Admin\StrainEnrichPage;
 use DabDashSync\Sync\Hooks;
 use DabDashSync\Sync\Queue;
 
@@ -51,6 +52,7 @@ final class Plugin {
 	public function init() {
 		if ( is_admin() ) {
 			( new SettingsPage() )->register();
+			( new StrainEnrichPage() )->register();
 		}
 
 		( new Queue() )->register();
@@ -71,9 +73,12 @@ final class Plugin {
 	public function plugin_action_links( $links ) {
 		$url = admin_url( 'options-general.php?page=dabdash-woo' );
 
+		$enrich_url = admin_url( 'options-general.php?page=dabdash-woo-strain-enrich' );
+
 		return array_merge(
 			array(
 				'settings' => '<a href="' . esc_url( $url ) . '">' . esc_html__( 'Settings', 'dabdash-for-woocommerce' ) . '</a>',
+				'strain'   => '<a href="' . esc_url( $enrich_url ) . '">' . esc_html__( 'Strain enrich', 'dabdash-for-woocommerce' ) . '</a>',
 			),
 			$links
 		);

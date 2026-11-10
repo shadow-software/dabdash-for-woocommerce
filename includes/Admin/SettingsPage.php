@@ -173,6 +173,19 @@ final class SettingsPage {
 				?>
 			</p>
 
+			<h2><?php echo esc_html__( 'One-shot strain enrich', 'dabdash-for-woocommerce' ); ?></h2>
+			<p>
+				<?php
+				echo esc_html__(
+					'Match WooCommerce products to DabDash strains and write SEO/AEO descriptions once — not part of hourly customer sync.',
+					'dabdash-for-woocommerce'
+				);
+				?>
+				<a href="<?php echo esc_url( admin_url( 'options-general.php?page=' . StrainEnrichPage::PAGE ) ); ?>">
+					<?php echo esc_html__( 'Open Strain Enrich →', 'dabdash-for-woocommerce' ); ?>
+				</a>
+			</p>
+
 			<h2><?php echo esc_html__( 'Field map', 'dabdash-for-woocommerce' ); ?></h2>
 			<p><?php echo esc_html__( 'Classification used by the sync resolver (canonical / contact / consent / never).', 'dabdash-for-woocommerce' ); ?></p>
 			<?php foreach ( $map as $class => $fields ) : ?>

@@ -5,7 +5,7 @@ Tags: dabdash, woocommerce, customer-sync, loyalty, consent
 Requires at least: 7.0
 Tested up to: 7.1
 Requires PHP: 8.5
-Stable tag: 1.1.9
+Stable tag: 1.2.0
 WC requires at least: 8.2
 WC tested up to: 11.0
 License: GPLv2 or later
@@ -119,6 +119,12 @@ background sync** is checked.
 * Shadow Software Privacy Policy: https://shadowsoftware.com/privacy
 
 == Changelog ==
+
+= 1.2.0 =
+* One-shot Strain Enrich admin job: match Woo products to DabDash strains via
+  Catalog `strain_lookup`, write SEO/AEO long description + excerpt (dry-run or
+  apply). Not a recurring Action Scheduler sync.
+* Docs: `docs/STRAIN-ENRICH.md`. Requires PHP 8.5 on this release line.
 
 = 1.1.9 =
 * Updated bundled `shadow-software/dabdash-php-sdk` to 6.8.1.

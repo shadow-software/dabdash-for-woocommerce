@@ -11,8 +11,15 @@
 - No custom GitHub updater — updates via WordPress.org only
 - Plugin Check (strict) in CI
 
+## Done (1.2.0)
+
+- One-shot **Strain Enrich** admin job (`Catalog/StrainEnricher`,
+  `Admin/StrainEnrichPage`) — dry-run or apply; uses `CatalogApi::strainLookup`
+- Docs: `docs/STRAIN-ENRICH.md`
+
 ## Next
 
 1. Live Settings screenshots for `.wordpress-org/`
 2. Reviewer sandbox tenant + token
 3. Optional OAuth connect UX if DabDash adds a browser flow
+4. Order sync (see `docs/ORDER-SYNC.md`) — separate from strain enrich

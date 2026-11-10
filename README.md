@@ -65,15 +65,21 @@ always wins.
   birth are classified **never** and are not mirrored into `wp_usermeta`.
 - 🔁 **Background sync.** Action Scheduler when present, otherwise WP-Cron —
   hourly pull, queued push proposals.
+- 🌿 **One-shot strain enrich.** Match Woo products to the DabDash strain
+  library and write readable long descriptions + excerpts (SEO/AEO) — dry-run
+  or apply; not a recurring job. See [`docs/STRAIN-ENRICH.md`](docs/STRAIN-ENRICH.md).
 - 📦 **Official PHP SDK.** Runtime talks through
   [`shadow-software/dabdash-php-sdk`](https://packagist.org/packages/shadow-software/dabdash-php-sdk)
   on Packagist (shipped in `vendor/`).
 
 ## Requirements
 
-- WordPress 6.4+, PHP 8.1+
+- WordPress 6.4+, **PHP 8.5+** (plugin header / `composer.json` on the 1.1.8+ line)
 - A DabDash tenant with an API base URL and access token
-- (Optional) WooCommerce — works with WooCommerce customer accounts
+- WooCommerce 8.2+ (required plugin)
+
+Hosts still on PHP 8.3 must upgrade PHP before installing current ZIPs, or use
+an older 8.3-capable build (e.g. 1.1.0).
 
 ## How it works
 
@@ -83,6 +89,8 @@ always wins.
    `contact`, `consent`, or `never`.
 3. **Enable sync.** An hourly job pulls customers, links them to WP users, and
    applies DabDash-owned fields. Contact/consent proposals queue upward.
+4. **Optional — strain enrich.** **Settings → DabDash Strain Enrich**: dry-run
+   matches, then apply to write product descriptions from DabDash strain data.
 
 ## Field authority
 
@@ -96,14 +104,16 @@ always wins.
 ## Architecture
 
 ```
-Api/SdkFactory   → shadow-software/dabdash-php-sdk (CustomersApi, …)
-Sync/FieldMap    → canonical | contact | consent | never
-Sync/Resolver    → conflict rules (consent = most-restrictive)
-Sync/LinkMap     → WP user ↔ DabDash customer id
-Sync/Puller      → customerList apply
-Sync/Pusher      → customerUpdate proposals
-Sync/Queue       → Action Scheduler or WP-Cron
-Admin/Settings   → connect + diagnostics
+Api/SdkFactory        → shadow-software/dabdash-php-sdk (CustomersApi, CatalogApi, …)
+Sync/FieldMap         → canonical | contact | consent | never
+Sync/Resolver         → conflict rules (consent = most-restrictive)
+Sync/LinkMap          → WP user ↔ DabDash customer id
+Sync/Puller           → customerList apply
+Sync/Pusher           → customerUpdate proposals
+Sync/Queue            → Action Scheduler or WP-Cron
+Catalog/StrainEnricher→ one-shot strain_lookup → product description/excerpt
+Admin/Settings        → connect + diagnostics
+Admin/StrainEnrich    → dry-run / apply UI
 ```
 
 ## Installation

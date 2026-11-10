@@ -67,3 +67,21 @@ $wpdb->query(
 		$dabdash_woo_meta_keys
 	)
 );
+
+$dabdash_woo_post_meta_keys = array(
+	'_dabdash_woo_strain_id',
+	'_dabdash_woo_strain_name',
+	'_dabdash_woo_strain_confidence',
+	'_dabdash_woo_strain_enriched_at',
+	'_dabdash_woo_strain_enrich_version',
+);
+
+$dabdash_woo_post_in = implode( ',', array_fill( 0, count( $dabdash_woo_post_meta_keys ), '%s' ) );
+
+// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching -- uninstall cleanup.
+$wpdb->query(
+	$wpdb->prepare(
+		"DELETE FROM {$wpdb->postmeta} WHERE meta_key IN ($dabdash_woo_post_in)", // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare -- IN list from fixed keys.
+		$dabdash_woo_post_meta_keys
+	)
+);

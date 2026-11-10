@@ -8,6 +8,7 @@
 namespace DabDashSync\Api;
 
 use DabDashSync\Settings;
+use ShadowSoftware\DabDash\Api\CatalogApi;
 use ShadowSoftware\DabDash\Api\CustomersApi;
 use ShadowSoftware\DabDash\Configuration;
 
@@ -54,6 +55,16 @@ final class SdkFactory {
 	 */
 	public static function customers( $access_token = null ) {
 		return new CustomersApi( null, self::configuration( $access_token ) );
+	}
+
+	/**
+	 * Catalog API client (strain lookup, product tools).
+	 *
+	 * @param string|null $access_token Override token.
+	 * @return CatalogApi
+	 */
+	public static function catalog( $access_token = null ) {
+		return new CatalogApi( null, self::configuration( $access_token ) );
 	}
 
 	/**
