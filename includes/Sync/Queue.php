@@ -24,6 +24,11 @@ final class Queue {
 	public const HOOK_PULL = 'dabdash_woo_pull';
 
 	/**
+	 * Hook name for a single order push.
+	 */
+	public const HOOK_PUSH_ORDER = 'dabdash_woo_push_order';
+
+	/**
 	 * Action Scheduler group name.
 	 */
 	private const GROUP = 'dabdash-woo';
@@ -35,7 +40,29 @@ final class Queue {
 	 */
 	public function register() {
 		add_action( self::HOOK_PULL, array( $this, 'run_pull' ) );
+		add_action( self::HOOK_PUSH_ORDER, array( $this, 'run_push_order' ), 10, 1 );
 		add_action( 'init', array( $this, 'ensure_recurring' ) );
+	}
+
+	/**
+	 * Queue an order upsert (Action Scheduler when available, else immediate).
+	 *
+	 * @param int $order_id Woo order id.
+	 * @return void
+	 */
+	public static function enqueue_order_push( $order_id ) {
+		$order_id = (int) $order_id;
+		if ( $order_id <= 0 || ! Settings::sync_enabled() || ! SdkFactory::is_configured() ) {
+			return;
+		}
+
+		if ( self::has_action_scheduler() && function_exists( 'as_enqueue_async_action' ) ) {
+			as_enqueue_async_action( self::HOOK_PUSH_ORDER, array( $order_id ), self::GROUP );
+
+			return;
+		}
+
+		( new self() )->run_push_order( $order_id );
 	}
 
 	/**
@@ -119,6 +146,36 @@ final class Queue {
 			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
 				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug-only unexpected failure trail.
 				error_log( 'DabDash Sync pull error: ' . $e->getMessage() );
+			}
+		}
+	}
+
+	/**
+	 * Push one Woo order to DabDash order_upsert.
+	 *
+	 * @param int $order_id Woo order id.
+	 * @return void
+	 */
+	public function run_push_order( $order_id ) {
+		$order_id = (int) $order_id;
+		if ( $order_id <= 0 || ! Settings::sync_enabled() || ! SdkFactory::is_configured() ) {
+			return;
+		}
+		if ( ! function_exists( 'wc_get_order' ) ) {
+			return;
+		}
+
+		$order = wc_get_order( $order_id );
+		if ( ! $order ) {
+			return;
+		}
+
+		try {
+			( new OrderPusher() )->push( $order );
+		} catch ( \Throwable $e ) {
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG ) {
+				// phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log -- Debug-only order push failure trail.
+				error_log( 'DabDash Sync order push failed: ' . $e->getMessage() );
 			}
 		}
 	}

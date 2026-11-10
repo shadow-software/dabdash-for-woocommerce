@@ -71,6 +71,8 @@ final class Hooks {
 		add_action( 'woocommerce_process_shop_order_meta', array( $this, 'on_order_customer' ), 20, 1 );
 		add_action( 'woocommerce_customer_save_address', array( $this, 'touch' ), 20, 1 );
 		add_action( 'woocommerce_checkout_order_processed', array( $this, 'on_order_processed' ), 20, 1 );
+		add_action( 'woocommerce_order_status_changed', array( $this, 'on_order_status_changed' ), 20, 1 );
+		add_action( 'woocommerce_update_order', array( $this, 'on_order_updated' ), 20, 1 );
 	}
 
 	/**
@@ -125,13 +127,35 @@ final class Hooks {
 	}
 
 	/**
-	 * After checkout, stamp the customer so consent/contact can propose upward.
+	 * After checkout, stamp the customer so consent/contact can propose upward,
+	 * and queue a DabDash order upsert.
 	 *
 	 * @param int $order_id Order id.
 	 * @return void
 	 */
 	public function on_order_processed( $order_id ) {
 		$this->on_order_customer( $order_id );
+		Queue::enqueue_order_push( (int) $order_id );
+	}
+
+	/**
+	 * Status transitions (processing → completed, etc.) refresh the DabDash row.
+	 *
+	 * @param int $order_id Order id.
+	 * @return void
+	 */
+	public function on_order_status_changed( $order_id ) {
+		Queue::enqueue_order_push( (int) $order_id );
+	}
+
+	/**
+	 * Admin / REST order saves.
+	 *
+	 * @param int $order_id Order id.
+	 * @return void
+	 */
+	public function on_order_updated( $order_id ) {
+		Queue::enqueue_order_push( (int) $order_id );
 	}
 
 	/**
