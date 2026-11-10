@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6e9e0c6c4daa70ee5dec4fd636db7f6b",
+    "content-hash": "7454a2ccb39578b16950e6afda78daa2",
     "packages": [
         {
             "name": "guzzlehttp/guzzle",
@@ -550,16 +550,16 @@
         },
         {
             "name": "shadow-software/dabdash-php-sdk",
-            "version": "6.8.1",
+            "version": "6.8.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/shadow-software/dabdash-php-sdk.git",
-                "reference": "f1a9de057f2925095b0fb1a7373ee097c0823e51"
+                "reference": "7016e6cd3f8b8cf6705a37c54a8a6e0f8123c420"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/shadow-software/dabdash-php-sdk/zipball/f1a9de057f2925095b0fb1a7373ee097c0823e51",
-                "reference": "f1a9de057f2925095b0fb1a7373ee097c0823e51",
+                "url": "https://api.github.com/repos/shadow-software/dabdash-php-sdk/zipball/7016e6cd3f8b8cf6705a37c54a8a6e0f8123c420",
+                "reference": "7016e6cd3f8b8cf6705a37c54a8a6e0f8123c420",
                 "shasum": ""
             },
             "require": {
@@ -587,10 +587,10 @@
             "homepage": "https://dabdash.com/docs/api",
             "support": {
                 "issues": "https://github.com/shadow-software/dabdash-php-sdk/issues",
-                "source": "https://github.com/shadow-software/dabdash-php-sdk/tree/6.8.1"
+                "source": "https://github.com/shadow-software/dabdash-php-sdk/tree/6.8.2"
             },
-            "time": "2026-11-09T09:41:53+00:00",
-            "published-time": "2026-11-09T09:41:57+00:00"
+            "time": "2026-11-10T14:12:46+00:00",
+            "published-time": "2026-11-10T14:12:51+00:00"
         },
         {
             "name": "symfony/deprecation-contracts",
@@ -3606,7 +3606,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=8.5"
+        "php": ">=8.3"
     },
     "platform-dev": {},
     "plugin-api-version": "2.11.0"

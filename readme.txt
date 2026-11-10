@@ -5,7 +5,7 @@ Tags: dabdash, woocommerce, customer-sync, loyalty, consent
 Requires at least: 7.0
 Tested up to: 7.1
 Requires PHP: 8.3
-Stable tag: 1.2.1
+Stable tag: 1.2.2
 WC requires at least: 8.2
 WC tested up to: 11.0
 License: GPLv2 or later
@@ -119,6 +119,9 @@ background sync** is checked.
 * Shadow Software Privacy Policy: https://shadowsoftware.com/privacy
 
 == Changelog ==
+
+= 1.2.2 =
+* Updated bundled `shadow-software/dabdash-php-sdk` to 6.8.2.
 
 = 1.2.1 =
 * Woo → DabDash order sync: `OrderMapper` / `OrderPusher` / Action Scheduler
